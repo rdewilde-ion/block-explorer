@@ -1,11 +1,11 @@
 <?php
 /**
- * @author John <john@paycoin.com>
+ * @author John <john@ionomy.com>
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace controllers;
-use lib\PaycoinDb;
-use lib\PaycoinRPC;
+use lib\IONDb;
+use lib\IONRPC;
 
 /**
  * Class Cli
@@ -23,8 +23,8 @@ class Cli extends Controller {
 			die("Already running.\n");
 		}
 
-		$paycoinDb = new PaycoinDb();
-		$paycoinDb->updateNetworkInfo();
+		$ionDb = new IONDb();
+		$ionDb->updateNetworkInfo();
 
 	}
 
@@ -38,14 +38,14 @@ class Cli extends Controller {
 
 		echo 'Building Database' . PHP_EOL;
 
-		$paycoinRPC = new PaycoinRPC();
-		$paycoinDb = new PaycoinDb();
+		$IONRPC = new IONRPC();
+		$ionDb = new IONDb();
 
-		$startBlockHeight = $paycoinDb->getLastBlockInDb();
+		$startBlockHeight = $ionDb->getLastBlockInDb();
 		$startBlockHeight = (int)$startBlockHeight;
 
 
-		$endBlockHeight = $paycoinRPC->getBlockCount();
+		$endBlockHeight = $IONRPC->getBlockCount();
 
 		if ($startBlockHeight == $endBlockHeight) {
 			echo "Caught up.  Last block was $endBlockHeight" . PHP_EOL;
@@ -56,7 +56,7 @@ class Cli extends Controller {
 
 		//@todo move this...
 		$startBlockHeight++;
-		$paycoinDb->buildDb($startBlockHeight, $endBlockHeight);
+		$ionDb->buildDb($startBlockHeight, $endBlockHeight);
 
 		echo "Complete" . PHP_EOL;
 
@@ -64,17 +64,17 @@ class Cli extends Controller {
 
 	public function buildWalletDatabase() {
 
-		$paycoinDb = new PaycoinDb();
+		$ionDb = new IONDb();
 		echo "Building wallet database" . PHP_EOL;
-		$paycoinDb->buildWalletDb();
+		$ionDb->buildWalletDb();
 
 	}
 
 	public function buildRichList() {
 
-		$paycoinDb = new PaycoinDb();
+		$ionDb = new IONDb();
 		echo "Building rich list" . PHP_EOL;
-		$paycoinDb->buildRichList();
+		$ionDb->buildRichList();
 
 	}
 

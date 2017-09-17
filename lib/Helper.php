@@ -1,6 +1,6 @@
 <?php
 /**
- * @author John <john@paycoin.com>
+ * @author John <john@ionomy.com>
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace lib;
@@ -53,8 +53,8 @@ class Helper {
 				if (isset(self::$addressTags[$address])) {
 					$tag = self::$addressTags[$address];
 				} else {
-					$paycoinDb = new PaycoinDb();
-					$tag = $paycoinDb->getAddressTag($address);
+					$IONDb = new IONDb();
+					$tag = $IONDb->getAddressTag($address);
 					if ($tag == null) {
 						self::$addressTags[$address] = false;
 					} else {

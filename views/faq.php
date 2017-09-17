@@ -15,7 +15,7 @@
 			<div class="qanda" id="signmessage">
 				<div>Q: <span class="question">How do I sign a message?</span></div>
 				<div><div class="answer">
-					<p class="">A: Open your Paycoin desktop wallet and go to <code>File</code> > <code>Sign/Verify Message</code></p>
+					<p class="">A: Open your ION desktop wallet and go to <code>File</code> > <code>Sign/Verify Message</code></p>
 					<img class="img-responsive img-rounded" src="/img/faq/signmessage1.png" alt="...">
 					<p>Enter the message you want to sign and the address that you want to sign from and click <code>Sign Message</code></p>
 					<img class="img-responsive img-rounded" src="/img/faq/signmessage2.png" alt="...">

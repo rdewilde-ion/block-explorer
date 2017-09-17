@@ -1,11 +1,11 @@
 <?php
 /**
- * @author John <john@paycoin.com>
+ * @author John <john@ionomy.com>
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace controllers;
-use lib\PaycoinDb;
-use lib\PaycoinRPC;
+use lib\IONDb;
+use lib\IONRPC;
 
 /**
  * Class Api
@@ -26,8 +26,8 @@ class Api extends Controller {
 
 	public function info() {
 
-		$paycoin = new PaycoinRPC();
-		$rpcInfo = $paycoin->getInfo();
+		$ion = new IONRPC();
+		$rpcInfo = $ion->getInfo();
 		$info = array(
 			'blocks' => $rpcInfo['blocks'],
 			'moneysupply' => $rpcInfo['moneysupply'],
@@ -38,11 +38,11 @@ class Api extends Controller {
 
 	public function getBlockByHeight() {
 		$height = $this->bootstrap->route['height'];
-		$paycoin = new PaycoinDb();
+		$ion = new IONDb();
 
-		$block = $paycoin->getBlockByHeight($height);
-		$block['transactions'] = $paycoin->getTransactionsInBlock($block['height']);
-		$block['transactionsOut'] = $paycoin->getTransactionsOut($block['height']);
+		$block = $ion->getBlockByHeight($height);
+		$block['transactions'] = $ion->getTransactionsInBlock($block['height']);
+		$block['transactionsOut'] = $ion->getTransactionsOut($block['height']);
 		$block['raw'] = unserialize($block['raw']);
 		$this->outputJsonResponse($block);
 	}
@@ -51,10 +51,10 @@ class Api extends Controller {
 
 	public function getBlockByHash() {
 		$hash = $this->bootstrap->route['hash'];
-		$paycoin = new PaycoinDb();
+		$ion = new IONDb();
 
-		$block = $paycoin->getBlockByHash($hash);
-		$block['transaction'] = $paycoin->getTransactionsInBlock($block['height']);
+		$block = $ion->getBlockByHash($hash);
+		$block['transaction'] = $ion->getTransactionsInBlock($block['height']);
 
 		$this->outputJsonResponse($block);
 	}
@@ -63,8 +63,8 @@ class Api extends Controller {
 
 	public function getTransaction() {
 		$txid = $this->bootstrap->route['txid'];
-		$paycoin = new PaycoinDb();
-		$transaction = $paycoin->getTransaction($txid);
+		$ion = new IONDb();
+		$transaction = $ion->getTransaction($txid);
 		$transaction['raw'] = unserialize($transaction['raw']);
 
 		$this->outputJsonResponse($transaction);
@@ -77,8 +77,8 @@ class Api extends Controller {
 		$height = $this->bootstrap->httpRequest->get('height');
 		$limit = $this->getLimit(10, 100);
 
-		$paycoin = new PaycoinDb();
-		$blocks = $paycoin->getLatestBlocks($limit, $height);
+		$ion = new IONDb();
+		$blocks = $ion->getLatestBlocks($limit, $height);
 		foreach ($blocks as &$block) {
 			$block['raw'] = unserialize($block['raw']);
 		}
@@ -89,8 +89,8 @@ class Api extends Controller {
 
 		$limit = $this->getLimit();
 
-		$paycoinDb = new PaycoinDb();
-		$transactions = $paycoinDb->getLatestTransactions($limit);
+		$ionDb = new IONDb();
+		$transactions = $ionDb->getLatestTransactions($limit);
 		$this->outputJsonResponse($transactions);
 	}
 
@@ -101,16 +101,16 @@ class Api extends Controller {
 
 		$limit = $this->getLimit();
 
-		$paycoinDb = new PaycoinDb();
+		$ionDb = new IONDb();
 
-		$addressInformation = $paycoinDb->getAddressInformation($address, $limit);
+		$addressInformation = $ionDb->getAddressInformation($address, $limit);
 		$this->outputJsonResponse($addressInformation);
 	}
 
 	public function getRichlist() {
 
-		$paycoin = new PaycoinDb();
-		$richList = $paycoin->getRichList();
+		$ion = new IONDb();
+		$richList = $ion->getRichList();
 		$this->outputJsonResponse($richList);
 
 	}
@@ -119,8 +119,8 @@ class Api extends Controller {
 
 		$limit = $this->getLimit();
 
-		$paycoinDb = new PaycoinDb();
-		$primeStakes = $paycoinDb->primeStakes($limit);
+		$ionDb = new IONDb();
+		$primeStakes = $ionDb->primeStakes($limit);
 		$this->outputJsonResponse($primeStakes);
 	}
 
@@ -155,8 +155,8 @@ class Api extends Controller {
 	public function disputeAddressTag() {
 
 		$address = $this->bootstrap->httpRequest->request->getAlnum('address');
-		$paycoinDb = new PaycoinDb();
-		$paycoinDb->disputeAddressTag($address);
+		$ionDb = new IONDb();
+		$ionDb->disputeAddressTag($address);
 
 		$response = array(
 			'success' => true,
@@ -182,10 +182,10 @@ class Api extends Controller {
 			);
 		} else {
 
-			$paycoinDb = new PaycoinDb();
+			$ionDb = new IONDb();
 
 			try {
-				$paycoinDb->addTagToAddress($address, $tag);
+				$ionDb->addTagToAddress($address, $tag);
 			} catch (\Exception $e) {
 				if (stristr($e->getMessage(), 'Duplicate') !== false) {
 					$response = array(
@@ -219,11 +219,11 @@ class Api extends Controller {
 		$subver = $this->bootstrap->httpRequest->request->get('subversion');
 		//$subver = urldecode($subver);
 		$subver = $_GET['subversion'];
-		$paycoinDb = new PaycoinDb();
-		$nodes = $paycoinDb->getNodes($subver);
+		$ionDb = new IONDb();
+		$nodes = $ionDb->getNodes($subver);
 		$nodes = array_column($nodes, 'addr');
 		foreach ($nodes as &$node) {
-			$node = str_replace(':8998', '', $node);
+			$node = str_replace(':12705', '', $node);
 
 		}
 

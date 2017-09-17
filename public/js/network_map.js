@@ -11,7 +11,7 @@ $( document ).ready(function() {
         },
 
         title : {
-            text : 'Paycoin Network Map',
+            text : 'ION Network Map',
             style: {
                 color: '#E0E0E3',
                 fontFamily: '"Montserrat", sans-serif',

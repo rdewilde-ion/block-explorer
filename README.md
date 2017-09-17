@@ -1,5 +1,5 @@
 
-# Paycoin Block Explorer
+# ION Block Explorer
 
 ## Features/Ideas
 
@@ -29,7 +29,7 @@
 
 ## Install
 
-Requirements: PHP, Mysql, paycoind, memcached
+Requirements: PHP, Mysql, IONd, memcached
 
 #### Mysql
 

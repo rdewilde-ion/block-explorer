@@ -19,7 +19,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Market Cap</div>
 			<div class="panel-body">
-				<a href="http://coinmarketcap.com/currencies/paycoin2/" target="_blank"><span id="market-cap">$0 USD</span></a>
+				<a href="http://coinmarketcap.com/currencies/ION2/" target="_blank"><span id="market-cap">$0 USD</span></a>
 			</div>
 		</div>
 	</div>

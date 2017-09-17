@@ -1,13 +1,13 @@
 <?php
 /**
- * @author John <john@paycoin.com>
+ * @author John <john@ionomy.com>
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace controllers;
 
 use lib\Exceptions\RateLimitException;
-use lib\PaycoinDb;
-use lib\PaycoinRPC;
+use lib\IONDb;
+use lib\IONRPC;
 use lib\User;
 
 /**
@@ -27,7 +27,7 @@ class Explorer extends Controller {
 		$this->setData('activeTab', 'Blocks');
 
 		$siteConfig = $this->getConfig('site');
-		$this->setData('pageTitle', $siteConfig['name'] . ' - Paycoin Block Explorer');
+		$this->setData('pageTitle', $siteConfig['name'] . ' - ION Block Explorer');
 
 		$this->addJs('/js/timeago.min.js');
 		$this->addJs('/js/index.js');
@@ -46,11 +46,11 @@ class Explorer extends Controller {
 		$q = trim($q);
 		$this->setData('q', $q);
 
-		$paycoinDb = new PaycoinDb();
+		$IONDb = new IONDb();
 
 		try {
 
-			$results = $paycoinDb->search($q);
+			$results = $IONDb->search($q);
 
 		} catch (RateLimitException $e) {
 			if (DEBUG_BAR) {
@@ -95,13 +95,13 @@ class Explorer extends Controller {
 		$limit = $this->getLimit(100);
 		$this->setData('limit', $limit);
 
-		$paycoinDb = new PaycoinDb();
+		$IONDb = new IONDb();
 
-		$addressInformation = $paycoinDb->getAddressInformation($address, $limit);
+		$addressInformation = $IONDb->getAddressInformation($address, $limit);
 
 		$this->setData('address', $address);
 		$this->setData('addressInformation', $addressInformation);
-		$this->setData('pageTitle', 'Paycoin Address - ' . $address);
+		$this->setData('pageTitle', 'ION Address - ' . $address);
 		$this->setData('cacheTime', 60);
 
 		$this->render('header');
@@ -119,13 +119,13 @@ class Explorer extends Controller {
 
 		$limit = $this->getLimit(25);
 
-		$paycoinDb = new PaycoinDb();
-		$primeStakes = $paycoinDb->primeStakes($limit);
+		$IONDb = new IONDb();
+		$primeStakes = $IONDb->primeStakes($limit);
 		$addresses = array();
 		foreach ($primeStakes as $primeStake) {
 			$addresses[] = $primeStake['address'];
 		}
-		$this->setData('addressTagMap', $paycoinDb->getAddressTagMap($addresses));
+		$this->setData('addressTagMap', $IONDb->getAddressTagMap($addresses));
 		$this->setData('primeStakes', $primeStakes);
 
 		$this->setData('pageTitle', 'Prime Stakes');
@@ -157,8 +157,8 @@ class Explorer extends Controller {
 
 		$limit = $this->getLimit(25);
 
-		$paycoin = new PaycoinDb();
-		$network = $paycoin->getNetwork();
+		$ION = new IONDb();
+		$network = $ION->getNetwork();
 
 		$this->setData('network', $network);
 		$this->setData('pageTitle', 'Network');
@@ -186,10 +186,10 @@ class Explorer extends Controller {
 
 		$this->addJs('//code.highcharts.com/mapdata/custom/world-highres.js');
 
-		$paycoin = new PaycoinDb();
-		$networkData = $paycoin->getNetworkMapData();
+		$ION = new IONDb();
+		$networkData = $ION->getNetworkMapData();
 		$limit = $this->getLimit(25);
-		$network = $paycoin->getNetworkByCity($limit);
+		$network = $ION->getNetworkByCity($limit);
 
 		$this->setData('network', $network);
 		$this->setData('networkData', $networkData);
@@ -213,14 +213,14 @@ class Explorer extends Controller {
 		$this->addJs('/js/timeago.min.js');
 
 		$limit = $this->getLimit(25);
-		$paycoinDb = new PaycoinDb();
-		$transactions = $paycoinDb->getLatestAddressTransactions($limit);
+		$IONDb = new IONDb();
+		$transactions = $IONDb->getLatestAddressTransactions($limit);
 
 		$addresses = array();
 		foreach ($transactions as $transaction) {
 			$addresses[] = $transaction['address'];
 		}
-		$this->setData('addressTagMap', $paycoinDb->getAddressTagMap($addresses));
+		$this->setData('addressTagMap', $IONDb->getAddressTagMap($addresses));
 
 		$this->setData('transactions', $transactions);
 
@@ -237,20 +237,20 @@ class Explorer extends Controller {
 		$this->addJs('/js/block.js');
 
 		$hash = $this->bootstrap->route['hash'];
-		$paycoin = new PaycoinDb();
-		$block = $paycoin->getBlockByHash($hash);
+		$ION = new IONDb();
+		$block = $ION->getBlockByHash($hash);
 		if ($block != null) {
-			$transactions = $paycoin->getTransactionsInBlock($block['height']);
+			$transactions = $ION->getTransactionsInBlock($block['height']);
 			foreach ($transactions as $k => $transaction) {
-				$transactions[$k]['vout'] = $paycoin->getTransactionsOut($transaction['txid']);
-				$transactions[$k]['vin'] = $paycoin->getTransactionsIn($transaction['txid']);
+				$transactions[$k]['vout'] = $ION->getTransactionsOut($transaction['txid']);
+				$transactions[$k]['vin'] = $ION->getTransactionsIn($transaction['txid']);
 			}
 			$this->setData('transactions', $transactions);
 
 		}
 		$this->setData('hash', $hash);
 		$this->setData('block', $block);
-		$this->setData('pageTitle', 'Paycoin Block - ' . (int)$block['height']);
+		$this->setData('pageTitle', 'ION Block - ' . (int)$block['height']);
 		$this->setData('cacheTime', 60);
 
 		$this->render('header');
@@ -262,20 +262,20 @@ class Explorer extends Controller {
 
 		$this->addJs('/js/transaction.js');
 		$txid = $this->bootstrap->route['txid'];
-		$paycoin = new PaycoinDb();
+		$ION = new IONDb();
 
 		$this->setBlockHeight();
 
-		$transaction = $paycoin->getTransaction($txid);
-		$transactionsIn = $paycoin->getTransactionsIn($txid);
-		$transactionsOut = $paycoin->getTransactionsOut($txid);
+		$transaction = $ION->getTransaction($txid);
+		$transactionsIn = $ION->getTransactionsIn($txid);
+		$transactionsOut = $ION->getTransactionsOut($txid);
 
-		$this->setData('redeemedIn', $paycoin->getTransactionIn($transaction['txid']));
+		$this->setData('redeemedIn', $ION->getTransactionIn($transaction['txid']));
 		$this->setData('transaction', $transaction);
 		$this->setData('transactionsIn', $transactionsIn);
 		$this->setData('transactionsOut', $transactionsOut);
 
-		$this->setData('pageTitle', 'Paycoin Transaction - ' . $txid);
+		$this->setData('pageTitle', 'ION Transaction - ' . $txid);
 		$this->setData('cacheTime', 60);
 
 		$this->render('header');
@@ -322,7 +322,7 @@ class Explorer extends Controller {
 			$name = $this->bootstrap->httpRequest->get('name');
 			$email = $this->bootstrap->httpRequest->get('email');
 
-			$emailBody = "Contact Us Submission From https://ledger.paycoin.com/contact\n";
+			$emailBody = "Contact Us Submission From https://ionomy.com/contact\n";
 			$emailBody .= "From: $name <{$email}> \n";
 			$emailBody .= "\n{$message}\n";
 			$emailBody .= "\nIP Address: {$_SERVER['REMOTE_ADDR']}\n";
@@ -330,7 +330,7 @@ class Explorer extends Controller {
 			if (mail($siteConfig['contactEmails'], 'Contact', $emailBody)) {
 				$this->setData('sent', true);
 			} else {
-				$this->setData('error', 'Error sending email.  Please email support@paycoin.com');
+				$this->setData('error', 'Error sending email.  Please email support@ionomy.com');
 			}
 		}
 
@@ -356,8 +356,8 @@ class Explorer extends Controller {
 		$this->addJs('/highcharts/js/modules/exporting.js');
 
 		$limit = $this->getLimit(25);
-		$paycoin = new PaycoinDb();
-		$richList = $paycoin->getRichList($limit);
+		$ION = new IONDb();
+		$richList = $ION->getRichList($limit);
 
 		$addresses = array();
 		$addressTagMap = array();
@@ -365,17 +365,17 @@ class Explorer extends Controller {
 			$addresses[] = $rich['address'];
 		}
 		if (count($addresses) > 0) {
-			$addressTagMap = $paycoin->getAddressTagMap($addresses);
+			$addressTagMap = $ION->getAddressTagMap($addresses);
 		}
 		$this->setData('addressTagMap', $addressTagMap);
 
-		$distribution = $paycoin->getRichListDistribution();
+		$distribution = $ION->getRichListDistribution();
 
 		$this->setData('cacheTime', 60);
 
 		$this->setData('distribution', $distribution);
 		$this->setData('richList', $richList);
-		$this->setData('pageTitle', 'Paycoin Rich List');
+		$this->setData('pageTitle', 'ION Rich List');
 		$this->render('header');
 		$this->render('richlist');
 		$this->render('footer');
@@ -385,7 +385,7 @@ class Explorer extends Controller {
 	public function primeBids() {
 
 		$limit = $this->getLimit(25);
-		$paycoin = new PaycoinDb();
+		$ION = new IONDb();
 
 		$startDate = '2015-07-01';
 		$this->setData('startDate', strtotime($startDate));
@@ -398,7 +398,7 @@ class Explorer extends Controller {
 		$primeBids = array();
 		if (time() > strtotime($startDate)) {
 			$currentRound = ceil($diff->days / $roundDays) + 1 . ' of 25';
-			$primeBids = $paycoin->getPrimeBids($limit);
+			$primeBids = $ION->getPrimeBids($limit);
 		}
 
 		$this->setData('currentRound', $currentRound);
@@ -418,7 +418,7 @@ class Explorer extends Controller {
 			}
 		}
 		if (count($addresses) > 0) {
-			$addressTagMap = $paycoin->getAddressTagMap($addresses);
+			$addressTagMap = $ION->getAddressTagMap($addresses);
 		}
 		$this->setData('addressTagMap', $addressTagMap);
 
@@ -426,8 +426,8 @@ class Explorer extends Controller {
 		$this->setData('cacheTime', 60);
 
 		$this->setData('primeBids', $primeBids);
-		$this->setData('primeBidders', $paycoin->getPossibleBidders());
-		$this->setData('pageTitle', 'Paycoin Prime Controller Bids');
+		$this->setData('primeBidders', $ION->getPossibleBidders());
+		$this->setData('pageTitle', 'ION Prime Controller Bids');
 		$this->render('header');
 		$this->render('primebids');
 		$this->render('footer');
@@ -447,18 +447,18 @@ class Explorer extends Controller {
 	}
 
 	private function setBlockHeight() {
-		$paycoin = new PaycoinDb();
-		$blockHeight = $paycoin->getLastBlockInDb();
+		$ION = new IONDb();
+		$blockHeight = $ION->getLastBlockInDb();
 		$this->setData('blockHeight', $blockHeight);
 	}
 
 	public function tagging() {
 		$this->addJs('/js/tagging.js');
 
-		$message = 'Paycoin Blockchain';
+		$message = 'ION Blockchain';
 		$this->setData('messageToSign', $message);
 
-		$this->setData('pageTitle', 'Tag a Paycoin address');
+		$this->setData('pageTitle', 'Tag a ION address');
 		$this->setData('success', false);
 		if ($this->bootstrap->httpRequest->getRealMethod() == 'POST') {
 
@@ -467,13 +467,13 @@ class Explorer extends Controller {
 			$signature = $this->bootstrap->httpRequest->request->get('signature');
 			$url = $this->bootstrap->httpRequest->request->get('url');
 
-			$message = 'Paycoin Blockchain';
+			$message = 'ION Blockchain';
 			$this->setData('messageToSign', $message);
 			$this->setData('address', $address);
 			$this->setData('tag', $tag);
 			$this->setData('url', $url);
 
-			$paycoinRpc = new PaycoinRPC;
+			$IONRpc = new IONRPC;
 			$error = false;
 			if (!empty($url)) {
 				$pu = parse_url($url);
@@ -494,12 +494,12 @@ class Explorer extends Controller {
 
 			if (empty($error)) {
 
-				$isVerified = $paycoinRpc->verifySignedMessage($address, $signature, $message);
+				$isVerified = $IONRpc->verifySignedMessage($address, $signature, $message);
 				if ($isVerified === true) {
 
 					$this->setData('success', true);
-					$paycoinDb = new PaycoinDb();
-					$paycoinDb->addTagToAddress($address, $tag, $url, 1);
+					$IONDb = new IONDb();
+					$IONDb->addTagToAddress($address, $tag, $url, 1);
 
 				} elseif ($isVerified === false) {
 					$this->setData('error', 'Failed to Verify Message');
@@ -541,7 +541,7 @@ class Explorer extends Controller {
 
 	public function test() {
 		$user = new User();
-		//var_dump($user->addUser('john', 'john@paycoin.com', 'test'));
-		var_dump($user->login('john', 'test'));
+		//var_dump($user->addUser('user', 'user@ionomy.com', 'test'));
+		var_dump($user->login('user', 'test'));
 	}
 } 

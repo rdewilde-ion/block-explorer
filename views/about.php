@@ -15,7 +15,7 @@
 		<tbody>
 			<tr>
 				<td><strong>Name (Tag)</strong></td>
-				<td>Paycoin (XPY)</td>
+				<td>ION (XPY)</td>
 			</tr>
 			<tr>
 				<td><strong>Algorithm</strong></td>
@@ -23,11 +23,11 @@
 			</tr>
 			<tr>
 				<td><strong>Website</strong></td>
-				<td><a href="https://www.paycoin.com/">https://www.paycoin.com/</a></td>
+				<td><a href="https://www.ionomy.com/">https://www.ionomy.com/</a></td>
 			</tr>
 			<tr>
 				<td><strong>Forums</strong></td>
-				<td><a href="https://talk.paycoin.com/">https://talk.paycoin.com/</a></td>
+				<td><a href="https://talk.ionomy.com/">https://talk.ionomy.com/</a></td>
 			</tr>
 			<tr>
 				<td><strong>Twitter</strong></td>

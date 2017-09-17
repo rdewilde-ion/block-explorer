@@ -1,11 +1,11 @@
 <?php
 /**
- * @author John <john@paycoin.com>
+ * @author John <john@ionomy.com>
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace controllers;
 
-use lib\PaycoinDb;
+use lib\IONDb;
 
 /**
  * Class Chart
@@ -69,8 +69,8 @@ class Chart extends Controller {
 		</li>';
 		$this->setData('limitSelector', $limitSelector);
 
-		$paycoinDb = new PaycoinDb();
-		$blocks = $paycoinDb->getLatestBlocks($limit, 0, 600);
+		$ionDb = new IONDb();
+		$blocks = $ionDb->getLatestBlocks($limit, 0, 600);
 
 		$blocks = array_reverse($blocks);
 		$blocks = array_column($blocks, null, 'height');
@@ -137,8 +137,8 @@ class Chart extends Controller {
 		$this->setData('limitSelector', $limitSelector);
 
 
-		$paycoinDb = new PaycoinDb();
-		$blocks = $paycoinDb->getLatestBlocks($limit, 0, 600);
+		$ionDb = new IONDb();
+		$blocks = $ionDb->getLatestBlocks($limit, 0, 600);
 
 		$blocks = array_reverse($blocks);
 		$blocks = array_column($blocks, null, 'height');
@@ -193,7 +193,7 @@ class Chart extends Controller {
 	public function getChartData() {
 
 		header("Content-Type: text/javascript");
-		$paycoinDb = new PaycoinDb();
+		$ionDb = new IONDb();
 
 		$chart =  $this->bootstrap->route['chart'];
 		if (!$chart) {
@@ -203,13 +203,13 @@ class Chart extends Controller {
 		switch ($chart) {
 
 			case 'transactions-per-block':
-				$dataPoints = $paycoinDb->getTransactionsPerBlockDataPoints(100000);
+				$dataPoints = $ionDb->getTransactionsPerBlockDataPoints(100000);
 				break;
 			case 'difficulty':
-				$dataPoints = $paycoinDb->getDifficultyDataPoints(100000);
+				$dataPoints = $ionDb->getDifficultyDataPoints(100000);
 				break;
 			default:
-				$dataPoints = $paycoinDb->getOutstandingDataPoints(100000000);
+				$dataPoints = $ionDb->getOutstandingDataPoints(100000000);
 
 		}
 

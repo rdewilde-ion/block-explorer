@@ -1,53 +1,53 @@
 <?php
 /**
- * @author John <john@paycoin.com>
+ * @author John <john@ionomy.com>
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace lib;
 
 
 /**
- * Class PaycoinRPC
+ * Class IONRPC
  * @package lib
  */
-class PaycoinRPC {
+class IONRPC {
 
 	/**
 	 * @var \jsonRPCClient
 	 */
-	public $paycoind;
+	public $ionDb;
 
 	public function __construct($server = null) {
 		/** @var $config array */
 		include(__DIR__ . '/../conf/config.php');
 		if ($server == null) {
-			$rpcUrl = 'http://' . $config['paycoind']['rpcuser'] . ':' . $config['paycoind']['rpcpassword'] .
-				'@' . $config['paycoind']['rpchost'] . ':' . $config['paycoind']['rpcport'] . '/';
+			$rpcUrl = 'http://' . $config['ionDb']['rpcuser'] . ':' . $config['ionDb']['rpcpassword'] .
+				'@' . $config['ionDb']['rpchost'] . ':' . $config['ionDb']['rpcport'] . '/';
 		} else {
 			$rpcUrl = 'http://' . $config['networknodes'][$server]['rpcuser'] . ':' . $config['networknodes'][$server]['rpcpassword'] .
 				'@' . $config['networknodes'][$server]['rpchost'] . ':' . $config['networknodes'][$server]['rpcport'] . '/';
 		}
-		$this->paycoind = new \jsonRPCClient($rpcUrl);
+		$this->ionDb = new \jsonRPCClient($rpcUrl);
 	}
 
 	public function getInfo() {
-		return $this->paycoind->getinfo();
+		return $this->ionDb->getinfo();
 	}
 
 	public function getPeerInfo() {
-		return $this->paycoind->getpeerinfo();
+		return $this->ionDb->getpeerinfo();
 	}
 
 	public function help() {
-		return $this->paycoind->help();
+		return $this->ionDb->help();
 	}
 
 	public function getBlockHash($blockHeight) {
-		return $this->paycoind->getblockhash($blockHeight);
+		return $this->ionDb->getblockhash($blockHeight);
 	}
 
 	public function getBlock($blockHash) {
-		return $this->paycoind->getblock($blockHash);
+		return $this->ionDb->getblock($blockHash);
 	}
 
 	public function getTransaction($txId) {
@@ -55,7 +55,7 @@ class PaycoinRPC {
 	}
 
 	public function decodeRawTransaction($hex) {
-		return $this->paycoind->decoderawtransaction($hex);
+		return $this->ionDb->decoderawtransaction($hex);
 	}
 
 	public function getTransactionHex($txId) {
@@ -63,19 +63,19 @@ class PaycoinRPC {
 	}
 
 	public function getRawTransaction($TxHex) {
-		return $this->paycoind->getrawtransaction($TxHex);
+		return $this->ionDb->getrawtransaction($TxHex);
 	}
 
 	public function getBlockCount() {
-		return $this->paycoind->getblockcount();
+		return $this->ionDb->getblockcount();
 	}
 
 	public function getLatestBlockHeight() {
-		return $this->paycoind->getblockcount();
+		return $this->ionDb->getblockcount();
 
 	}
 	public function getLastBlocks() {
-		$lastBlock = $this->paycoind->getblockcount();
+		$lastBlock = $this->ionDb->getblockcount();
 		$blocks = array();
 		if ($lastBlock > 10) {
 			for ($i=0; $i<10; $i++) {
@@ -92,7 +92,7 @@ class PaycoinRPC {
 
 		try {
 
-			$result = $this->paycoind->verifymessage($address, $message, $signature);
+			$result = $this->ionDb->verifymessage($address, $message, $signature);
 			return $result;
 
 		} catch (\Exception $e) {

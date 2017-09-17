@@ -1,10 +1,13 @@
 {
-    "name": "John0x00/block-explorer",
-    "description": "Paycoin Block Explorer",
+    "name": "rdewilde/block-explorer",
+    "description": "ION Block Explorer",
     "authors": [
         {
-            "name": "Unicoin",
-            "email": "unicoin@paycoinsites.com"
+            "name": "Unicoin"
+        },
+        {
+            "name": "Rdewilde",
+            "email": "email@robertdewilde.nl"
         }
     ],
     "require": {

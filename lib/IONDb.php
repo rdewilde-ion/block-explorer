@@ -1,15 +1,15 @@
 <?php
 /**
- * @author John <john@paycoin.com>
+ * @author John <john@ionomy.com>
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace lib;
 
 /**
- * Class PaycoinDb
+ * Class IONDb
  * @package lib
  */
-class PaycoinDb {
+class IONDb {
 
 	const BC_SCALE = 6;
 	public $mysql;
@@ -113,14 +113,14 @@ class PaycoinDb {
 	public function processTransactions($block) {
 		$transactions = $block['tx'];
 
-		$paycoin = new PaycoinRPC();
+		$ION = new IONRPC();
 		$totalValue = 0;
 		$totalValueIn = 0;
 		$transactionCount = 0;
 		foreach ($transactions as $transaction) {
 			$transactionCount++;
-			$rawTransaction = $paycoin->getRawTransaction($transaction);
-			$decodedTransaction = $paycoin->decodeRawTransaction($rawTransaction);
+			$rawTransaction = $ION->getRawTransaction($transaction);
+			$decodedTransaction = $ION->decodeRawTransaction($rawTransaction);
 
 			$vIn = $this->processVin($decodedTransaction);
 			$vOut = $this->processVout($decodedTransaction);
@@ -183,9 +183,9 @@ class PaycoinDb {
 
 	public function getVout($txid, $vout, $type) {
 
-		$paycoin = new PaycoinRPC();
-		$rawTransaction = $paycoin->getRawTransaction($txid);
-		$transaction = $paycoin->decodeRawTransaction($rawTransaction);
+		$ION = new IONRPC();
+		$rawTransaction = $ION->getRawTransaction($txid);
+		$transaction = $ION->decodeRawTransaction($rawTransaction);
 		if ($type == "addresses") {
 			$return = $transaction['vout'][$vout]["scriptPubKey"]["addresses"][0];
 		} else {
@@ -261,11 +261,11 @@ class PaycoinDb {
 			$outstanding = $previousBlock['outstanding'];
 		}
 
-		$paycoinRPC = new PaycoinRPC();
+		$IONRPC = new IONRPC();
 
 		for ($i = $startBlockHeight; $i <= $endBlockHeight; $i++) {
-			$blockHash = $paycoinRPC->getBlockHash($i);
-			$block = $paycoinRPC->getBlock($blockHash);
+			$blockHash = $IONRPC->getBlockHash($i);
+			$block = $IONRPC->getBlock($blockHash);
 
 
 			$sql = 'UPDATE blocks SET nextblockhash = ' . $this->mysql->escape($block['hash']) .  ' WHERE `height` =' . ($block['height']-1);
@@ -1008,14 +1008,14 @@ class PaycoinDb {
 
 	public function updateNetworkInfo() {
 
-		$paycoin = new PaycoinRPC('dnsseed');
-		$peers = $paycoin->getPeerInfo();
+		$ION = new IONRPC('dnsseed');
+		$peers = $ION->getPeerInfo();
 		if (count($peers) > 0) {
 			$this->updatePeers($peers);
 		}
 
-		$paycoin = new PaycoinRPC('YoshiRpi1');
-		$peers = $paycoin->getPeerInfo();
+		$ION = new IONRPC('YoshiRpi1');
+		$peers = $ION->getPeerInfo();
 		var_dump($peers);
 	}
 

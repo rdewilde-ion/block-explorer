@@ -1,15 +1,16 @@
 <?php
 $config = array(
 	'site' => array(
-		'name' => 'Paycoin Block Explorer',
+		'name' => 'ION Block Explorer',
 		'contactEmails' => 'webmaster@example.com',
 		'allowips' => array(
-			'192.168.10.1',
+			'192.168.1.1',
+			'127.0.0.1',
 		)
 	),
-	'paycoind' => array(
+	'iond' => array(
 		'rpchost' => '127.0.0.1',
-		'rpcport' => 8332,
+		'rpcport' => 12705,
 		'rpcuser' => 'user',
 		'rpcpassword' => 'password',
 	),
@@ -25,7 +26,8 @@ $config = array(
 	),
 	'debugbar' => array(
 		'allowips' => array(
-			'192.168.10.1',
+			'192.168.1.1',
+			'127.0.0.1',
 		)
 	)
 );

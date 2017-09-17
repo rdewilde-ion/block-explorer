@@ -1,7 +1,7 @@
 <?php
-$pageTitle = 'Paycoin Ledger';
+$pageTitle = 'ION Ledger';
 $pageName = '';
-$pageDescription = 'Paycoin Block Explorer & Currency Statistics. View detailed information on all paycoin transactions and blocks.';
+$pageDescription = 'ION Block Explorer & Currency Statistics. View detailed information on all ION transactions and blocks.';
 $debugbarRenderer = false;
 if (DEBUG_BAR ) {
 	$debugbarRenderer = \lib\Bootstrap::getInstance()->debugbar->getJavascriptRenderer();
@@ -14,7 +14,7 @@ if (isset($this)) {
 		header("Pragma: cache");
 		header("Cache-Control: max-age=$cacheTime");
 	}
-	$pageTitle = $this->getData('pageTitle', 'Paycoin Ledger');
+	$pageTitle = $this->getData('pageTitle', 'ION Ledger');
 	$pageName = $this->getData('pageName', 'Home');
 	$pageDescription = $this->getData('pageName', $pageDescription);
 	if (DEBUG_BAR) {
