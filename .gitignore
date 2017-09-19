@@ -1,3 +1,18 @@
+# Global
+.*.swp
+.DS_Store
+
+.env
+etc/ssl/*
+
 .idea/
 conf/config.php
 vendor/
+data/db/*
+ioncoin/*
+
+# Netbeans
+nbproject/
+/nbproject/
+/nbproject/private/
+/nbproject/private/private.properties
