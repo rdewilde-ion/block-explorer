@@ -1,5 +1,5 @@
 <?php
-$primeStakes = $this->getData('primeStakes');
+//$primeStakes = $this->getData('primeStakes');
 $limit = $this->getData('limit');
 $addressTagMap = $this->getData('addressTagMap');
 
@@ -22,15 +22,15 @@ $addressTagMap = $this->getData('addressTagMap');
 			<th>Time</th>
 		</tr>
 		</thead>
-		<?php foreach($primeStakes as $primeStake) { ?>
-			<tr>
-				<td><a href="/block/<?php echo $primeStake['hash']?>"><?php echo $primeStake['block_height'] ?></td>
-				<td><?php echo \lib\Helper::getTxHashLink($primeStake['txid']) ?></td>
-				<td><?php echo \lib\Helper::getAddressLink($primeStake['address'], $addressTagMap) ?></td>
-				<td><?php echo \lib\Helper::formatXPY($primeStake['value']) ?></td>
-				<td><?php echo \lib\Helper::formatTime($primeStake['time']) ?></td>
-			</tr>
-		<?php } ?>
+<!--		--><?php //foreach($primeStakes as $primeStake) { ?>
+<!--			<tr>-->
+<!--				<td><a href="/block/--><?php //echo $primeStake['hash']?><!--">--><?php //echo $primeStake['block_height'] ?><!--</td>-->
+<!--				<td>--><?php //echo \lib\Helper::getTxHashLink($primeStake['txid']) ?><!--</td>-->
+<!--				<td>--><?php //echo \lib\Helper::getAddressLink($primeStake['address'], $addressTagMap) ?><!--</td>-->
+<!--				<td>--><?php //echo \lib\Helper::formatION($primeStake['value']) ?><!--</td>-->
+<!--				<td>--><?php //echo \lib\Helper::formatTime($primeStake['time']) ?><!--</td>-->
+<!--			</tr>-->
+<!--		--><?php //} ?>
 	</table>
 
 </div>

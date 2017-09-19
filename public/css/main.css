@@ -5,12 +5,11 @@ html {
 body {
 	height: 100%;
 	margin: 0;
-	padding-top: 50px;
-	font-family: 'Montserrat', sans-serif;
-	height: 100%;
-	margin: 0;
-	background: #087094 radial-gradient(#087094, #042d3c) no-repeat fixed;
-	color: white;
+	background: #e4e9f0 none repeat scroll 0 0;
+	font-family: "Roboto",sans-serif;
+	padding-top: 60px;
+	line-height: 1.42857;
+	/*background: #087094 radial-gradient(#087094, #042d3c) no-repeat fixed;*/
 }
 .modal-body {
 	color: #000000;
@@ -23,13 +22,25 @@ footer {
 	height:25px;
 }
 a {
-	color: #ffffff;
 }
 a:hover {
-	color: #ffffff;
 }
 th {
-	font-size: 16px;
+	font-size: 14px;
+}
+
+h2 {
+	font-size: 20px;
+	font-weight: 500;
+	margin: 0;
+	padding: 0 0 20px;
+}
+
+.logo {
+	background: rgba(0, 0, 0, 0) url("/img/logo.svg") no-repeat scroll center center / 100% auto;
+	display: inline-block;
+	height: 60px;
+	width: 75px;
 }
 .navbar .navbar-nav {
 	display: inline-block;
@@ -42,14 +53,19 @@ th {
 .dropdown-menu>li>a:hover {
 	color: #337ab7;
 }
-.nav .open>a, .nav .open>a:focus, .nav .open>a  {
-	background-color: #042d3c;
-	border-color: #337ab7;
+.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+	background: none !important;
+	border: none;
+}
+
+.nav-tabs > li > a:hover {
+	background: none !important;
+	border: none;
 }
 
 /*#087094*/
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-	border-top: 2px solid #087094;
+	/*border-top: 2px solid #087094;*/
 }
 .popover-content {
 	color: #042d3c;
@@ -60,17 +76,13 @@ th {
 .search-box {
 	padding-top: 46px;
 }
-.logo {
-	width: 100%; /* you can use % */
-	height: auto;
-}
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
 	color: #FFF9F9;
 	background-color: #087094;
 }
 nav {
 	color: #FFF9F9;
-	background-image: linear-gradient(#042d3c, #087094);
+	background: rgba(0, 0, 0, 0) linear-gradient(to right, rgb(2, 40, 68) 0%, rgb(4, 100, 166) 100%) repeat scroll 0 0;
 }
 .navbar-default .navbar-nav>li>a  {
 	color: #FFF9F9;
@@ -78,33 +90,38 @@ nav {
 .navbar-default .navbar-nav>li>a:hover  {
 	color: #087094;
 }
+.nav-tabs {
+	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, rgb(12, 28, 36) 0%, rgb(59, 45, 76) 100%) repeat scroll 0 0;
+}
 .nav-tabs>li a:hover {
-	background-color: #042d3c;
+	/*background-color: #042d3c;*/
 }
 .nav-tabs {
-	border-bottom: 2px solid #087094;
+	/*border-bottom: 2px solid #087094;*/
 }
 .nav-tabs>li>a:hover {
-	border-color: #087094 #087094 #087094;
+	/*border-color: #087094 #087094 #087094;*/
 }
 .nav-tabs>li.active>a {
-	border-color: #087094 #087094 #087094;
+	/*border-color: #087094 #087094 #087094;*/
 }
 .nav-tabs>li a {
 	color: #ffffff;
 }
 .navbar-default {
-	border-color: #087094;
+	/*border-color: #087094;*/
 }
 .panel-default {
-	background-color: rgba(0, 0, 0, 0.20);
+	background-color: white;
+	color: black;
 }
 .panel-default>.panel-heading {
-	color: #042d3c;
+	color: black;
 }
 .table {
-	font-family: 'Lato', sans-serif;
-	background-color: rgba(0, 0, 0, 0.20);
+	/*font-family: 'Lato', sans-serif;*/
+	background: none white;
+	/*background: rgba(0, 0, 0, 0) linear-gradient(to bottom, rgb(12, 28, 36) 0%, rgb(59, 45, 76) 100%) repeat scroll 0 0;*/
 }
 .table-hover>tbody>tr:hover {
 	background-color: #087094;
@@ -113,7 +130,7 @@ nav {
 	color: white;
 }
 .table>thead>tr>th {
-	border-bottom: 2px solid #087094;
+	/*border-bottom: 2px solid #087094;*/
 }
 .a-normal {
 	color: blue;

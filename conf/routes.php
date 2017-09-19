@@ -28,7 +28,7 @@ $routeCollection->add('transactionsPerBlock', new Routing\Route('/charts/block/t
 $routeCollection->add('valuePerBlock', new Routing\Route('/charts/block/value', array("class" => "\\controllers\\Chart")));
 $routeCollection->add('getChartData', new Routing\Route('/api/charts/{chart}', array("class" => "\\controllers\\Chart")));
 
-
+$routeCollection->add('getBittrexMarket', new Routing\Route('/api/bittrex/market', array('class' => '\\controllers\Api')));
 $routeCollection->add('getTransaction', new Routing\Route('/api/transaction/{txid}', array("class" => "\\controllers\\Api")));
 $routeCollection->add('getAddress', new Routing\Route('/api/address/{address}', array("class" => "\\controllers\\Api")));
 $routeCollection->add('getRichlist', new Routing\Route('/api/richlist', array("class" => "\\controllers\\Api")));

@@ -6,10 +6,10 @@ $tabs = array(
 	array('href' => '/', 'name' => 'Blocks'),
 	array('href' => '/latesttransactions', 'name' => 'Transactions'),
 	array('href' => '/richlist', 'name' => 'Rich List'),
-	array('href' => '/primebids', 'name' => 'Prime Bids'),
-	array('href' => '/primestakes', 'name' => 'Prime Stakes'),
-	//array('href' => '/network', 'name' => 'Network'),
-	//array('href' => '/about', 'name' => 'About'),
+//	array('href' => '/primebids', 'name' => 'Prime Bids'),
+//	array('href' => '/primestakes', 'name' => 'Prime Stakes'),
+//	array('href' => '/network', 'name' => 'Network'),
+//	array('href' => '/about', 'name' => 'About'),
 );
 ?>
 <ul class="nav nav-tabs">
@@ -51,7 +51,7 @@ $tabs = array(
 //		array('href' => '/primebids', 'name' => 'Prime Bids'),
 //		array('href' => '/primestakes', 'name' => 'Prime Stakes'),
 //		//array('href' => '/network', 'name' => 'Network'),
-		array('href' => '/about', 'name' => 'About'),
+//		array('href' => '/about', 'name' => 'About'),
 	);
 	foreach ($tabs as $tab) {
 		echo '<li role="presentation" ';

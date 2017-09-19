@@ -8,7 +8,7 @@ $( document ).ready(function() {
     }).done(function(data) {
 
             blockHeight = data.data[0].height;
-            $("#outstanding").text(addCommas((data.data[0]['outstanding']*1).toString()) + ' XPY');
+            $("#outstanding").text(addCommas((data.data[0]['outstanding']*1).toString()) + ' ION');
 
         });
 
@@ -20,7 +20,7 @@ $( document ).ready(function() {
                 data: { height: blockHeight },
                 success: function(data) {
                     blockHeight = data.data[0].height; // Store Blockheight
-                    $("#outstanding").text(addCommas((data.data[0]['outstanding']*1).toString()) + ' XPY');
+                    $("#outstanding").text(addCommas((data.data[0]['outstanding']*1).toString()) + ' ION');
 
                 },
                 dataType: "json",

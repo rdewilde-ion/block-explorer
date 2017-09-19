@@ -46,11 +46,11 @@ class Explorer extends Controller {
 		$q = trim($q);
 		$this->setData('q', $q);
 
-		$IONDb = new IONDb();
+		$ionDb = new IONDb();
 
 		try {
 
-			$results = $IONDb->search($q);
+			$results = $ionDb->search($q);
 
 		} catch (RateLimitException $e) {
 			if (DEBUG_BAR) {
@@ -95,9 +95,9 @@ class Explorer extends Controller {
 		$limit = $this->getLimit(100);
 		$this->setData('limit', $limit);
 
-		$IONDb = new IONDb();
+		$ionDb = new IONDb();
 
-		$addressInformation = $IONDb->getAddressInformation($address, $limit);
+		$addressInformation = $ionDb->getAddressInformation($address, $limit);
 
 		$this->setData('address', $address);
 		$this->setData('addressInformation', $addressInformation);
@@ -109,31 +109,31 @@ class Explorer extends Controller {
 		$this->render('footer');
 	}
 
-	public function primeStakes() {
-
-		$this->setData('activeTab', 'Prime Stakes');
-		$this->setData('enableLimitSelector', true);
-
-		$this->addJs('/js/market_info.js');
-		$this->addJs('/js/update_outstanding.js');
-
-		$limit = $this->getLimit(25);
-
-		$IONDb = new IONDb();
-		$primeStakes = $IONDb->primeStakes($limit);
-		$addresses = array();
-		foreach ($primeStakes as $primeStake) {
-			$addresses[] = $primeStake['address'];
-		}
-		$this->setData('addressTagMap', $IONDb->getAddressTagMap($addresses));
-		$this->setData('primeStakes', $primeStakes);
-
-		$this->setData('pageTitle', 'Prime Stakes');
-		$this->setData('cacheTime', 60);
-		$this->render('header');
-		$this->render('primestakes');
-		$this->render('footer');
-	}
+//	public function primeStakes() {
+//
+//		$this->setData('activeTab', 'Prime Stakes');
+//		$this->setData('enableLimitSelector', true);
+//
+//		$this->addJs('/js/market_info.js');
+//		$this->addJs('/js/update_outstanding.js');
+//
+//		$limit = $this->getLimit(25);
+//
+//		$ionDb = new IONDb();
+//		$primeStakes = $ionDb->primeStakes($limit);
+//		$addresses = array();
+//		foreach ($primeStakes as $primeStake) {
+//			$addresses[] = $primeStake['address'];
+//		}
+//		$this->setData('addressTagMap', $ionDb->getAddressTagMap($addresses));
+//		$this->setData('primeStakes', $primeStakes);
+//
+//		$this->setData('pageTitle', 'Prime Stakes');
+//		$this->setData('cacheTime', 60);
+//		$this->render('header');
+//		$this->render('primestakes');
+//		$this->render('footer');
+//	}
 
 	public function network() {
 
@@ -157,8 +157,8 @@ class Explorer extends Controller {
 
 		$limit = $this->getLimit(25);
 
-		$ION = new IONDb();
-		$network = $ION->getNetwork();
+		$ion = new IONDb();
+		$network = $ion->getNetwork();
 
 		$this->setData('network', $network);
 		$this->setData('pageTitle', 'Network');
@@ -186,11 +186,11 @@ class Explorer extends Controller {
 
 		$this->addJs('//code.highcharts.com/mapdata/custom/world-highres.js');
 
-		$ION = new IONDb();
-		$networkData = $ION->getNetworkMapData();
+		$ion = new IONDb();
+		$networkData = $ion->getNetworkMapData();
 		$limit = $this->getLimit(25);
-		$network = $ION->getNetworkByCity($limit);
-
+		$network = $ion->getNetworkByCity($limit);
+//
 		$this->setData('network', $network);
 		$this->setData('networkData', $networkData);
 		$this->setData('pageTitle', 'Network Map');
@@ -213,14 +213,14 @@ class Explorer extends Controller {
 		$this->addJs('/js/timeago.min.js');
 
 		$limit = $this->getLimit(25);
-		$IONDb = new IONDb();
-		$transactions = $IONDb->getLatestAddressTransactions($limit);
+		$ionDb = new IONDb();
+		$transactions = $ionDb->getLatestAddressTransactions($limit);
 
 		$addresses = array();
 		foreach ($transactions as $transaction) {
 			$addresses[] = $transaction['address'];
 		}
-		$this->setData('addressTagMap', $IONDb->getAddressTagMap($addresses));
+		$this->setData('addressTagMap', $ionDb->getAddressTagMap($addresses));
 
 		$this->setData('transactions', $transactions);
 
@@ -237,13 +237,13 @@ class Explorer extends Controller {
 		$this->addJs('/js/block.js');
 
 		$hash = $this->bootstrap->route['hash'];
-		$ION = new IONDb();
-		$block = $ION->getBlockByHash($hash);
+		$ion = new IONDb();
+		$block = $ion->getBlockByHash($hash);
 		if ($block != null) {
-			$transactions = $ION->getTransactionsInBlock($block['height']);
+			$transactions = $ion->getTransactionsInBlock($block['height']);
 			foreach ($transactions as $k => $transaction) {
-				$transactions[$k]['vout'] = $ION->getTransactionsOut($transaction['txid']);
-				$transactions[$k]['vin'] = $ION->getTransactionsIn($transaction['txid']);
+				$transactions[$k]['vout'] = $ion->getTransactionsOut($transaction['txid']);
+				$transactions[$k]['vin'] = $ion->getTransactionsIn($transaction['txid']);
 			}
 			$this->setData('transactions', $transactions);
 
@@ -262,15 +262,15 @@ class Explorer extends Controller {
 
 		$this->addJs('/js/transaction.js');
 		$txid = $this->bootstrap->route['txid'];
-		$ION = new IONDb();
+		$ion = new IONDb();
 
 		$this->setBlockHeight();
 
-		$transaction = $ION->getTransaction($txid);
-		$transactionsIn = $ION->getTransactionsIn($txid);
-		$transactionsOut = $ION->getTransactionsOut($txid);
+		$transaction = $ion->getTransaction($txid);
+		$transactionsIn = $ion->getTransactionsIn($txid);
+		$transactionsOut = $ion->getTransactionsOut($txid);
 
-		$this->setData('redeemedIn', $ION->getTransactionIn($transaction['txid']));
+		$this->setData('redeemedIn', $ion->getTransactionIn($transaction['txid']));
 		$this->setData('transaction', $transaction);
 		$this->setData('transactionsIn', $transactionsIn);
 		$this->setData('transactionsOut', $transactionsOut);
@@ -356,8 +356,8 @@ class Explorer extends Controller {
 		$this->addJs('/highcharts/js/modules/exporting.js');
 
 		$limit = $this->getLimit(25);
-		$ION = new IONDb();
-		$richList = $ION->getRichList($limit);
+		$ion = new IONDb();
+		$richList = $ion->getRichList($limit);
 
 		$addresses = array();
 		$addressTagMap = array();
@@ -365,11 +365,11 @@ class Explorer extends Controller {
 			$addresses[] = $rich['address'];
 		}
 		if (count($addresses) > 0) {
-			$addressTagMap = $ION->getAddressTagMap($addresses);
+			$addressTagMap = $ion->getAddressTagMap($addresses);
 		}
 		$this->setData('addressTagMap', $addressTagMap);
 
-		$distribution = $ION->getRichListDistribution();
+		$distribution = $ion->getRichListDistribution();
 
 		$this->setData('cacheTime', 60);
 
@@ -385,7 +385,7 @@ class Explorer extends Controller {
 	public function primeBids() {
 
 		$limit = $this->getLimit(25);
-		$ION = new IONDb();
+		$ion = new IONDb();
 
 		$startDate = '2015-07-01';
 		$this->setData('startDate', strtotime($startDate));
@@ -398,7 +398,7 @@ class Explorer extends Controller {
 		$primeBids = array();
 		if (time() > strtotime($startDate)) {
 			$currentRound = ceil($diff->days / $roundDays) + 1 . ' of 25';
-			$primeBids = $ION->getPrimeBids($limit);
+			$primeBids = $ion->getPrimeBids($limit);
 		}
 
 		$this->setData('currentRound', $currentRound);
@@ -418,7 +418,7 @@ class Explorer extends Controller {
 			}
 		}
 		if (count($addresses) > 0) {
-			$addressTagMap = $ION->getAddressTagMap($addresses);
+			$addressTagMap = $ion->getAddressTagMap($addresses);
 		}
 		$this->setData('addressTagMap', $addressTagMap);
 
@@ -426,7 +426,7 @@ class Explorer extends Controller {
 		$this->setData('cacheTime', 60);
 
 		$this->setData('primeBids', $primeBids);
-		$this->setData('primeBidders', $ION->getPossibleBidders());
+		$this->setData('primeBidders', $ion->getPossibleBidders());
 		$this->setData('pageTitle', 'ION Prime Controller Bids');
 		$this->render('header');
 		$this->render('primebids');
@@ -447,8 +447,8 @@ class Explorer extends Controller {
 	}
 
 	private function setBlockHeight() {
-		$ION = new IONDb();
-		$blockHeight = $ION->getLastBlockInDb();
+		$ion = new IONDb();
+		$blockHeight = $ion->getLastBlockInDb();
 		$this->setData('blockHeight', $blockHeight);
 	}
 
@@ -473,7 +473,7 @@ class Explorer extends Controller {
 			$this->setData('tag', $tag);
 			$this->setData('url', $url);
 
-			$IONRpc = new IONRPC;
+			$ionRpc = new IONRPC;
 			$error = false;
 			if (!empty($url)) {
 				$pu = parse_url($url);
@@ -494,12 +494,12 @@ class Explorer extends Controller {
 
 			if (empty($error)) {
 
-				$isVerified = $IONRpc->verifySignedMessage($address, $signature, $message);
+				$isVerified = $ionRpc->verifySignedMessage($address, $signature, $message);
 				if ($isVerified === true) {
 
 					$this->setData('success', true);
-					$IONDb = new IONDb();
-					$IONDb->addTagToAddress($address, $tag, $url, 1);
+					$ionDb = new IONDb();
+					$ionDb->addTagToAddress($address, $tag, $url, 1);
 
 				} elseif ($isVerified === false) {
 					$this->setData('error', 'Failed to Verify Message');

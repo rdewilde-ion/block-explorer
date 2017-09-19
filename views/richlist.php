@@ -24,7 +24,7 @@ $addressTagMap = $this->getData('addressTagMap');
 				<th class="text-right" style="width: 45px">Rank</th>
 				<th>Address</th>
 				<th>Balance</th>
-				<th>Percent of coins</th>
+				<th>Percent</th>
 			</tr>
 			</thead>
 			<?php if (count($richList) == 0) {  ?>
@@ -36,7 +36,7 @@ $addressTagMap = $this->getData('addressTagMap');
 				<tr>
 					<td class="text-right"><?php echo $rich['rank'] ?></td>
 					<td><?php echo \lib\Helper::getAddressLink($rich['address'], $addressTagMap) ?></td>
-					<td><?php echo \lib\Helper::formatXPY($rich['balance']) ?></td>
+					<td><?php echo \lib\Helper::formatION($rich['balance']) ?></td>
 					<td><?php echo $rich['percent'] ?> %</td>
 				</tr>
 			<?php } ?>
@@ -68,7 +68,7 @@ $addressTagMap = $this->getData('addressTagMap');
 						?>
 						<tr>
 							<td><?php echo $row['top'] ?></td>
-							<td><?php echo \lib\Helper::formatXPY($row['holdings']) ?></td>
+							<td><?php echo \lib\Helper::formatION($row['holdings']) ?></td>
 							<td><?php echo $row['percent'] ?> %</td>
 						</tr>
 					<?php } ?>

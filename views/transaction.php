@@ -42,7 +42,7 @@ $confirmations = $blockHeight - $transaction['block_height'] + 1;
 		</tr>
 		<tr>
 			<td>Total Output</td>
-			<td><?php echo \lib\Helper::formatXPY($totalOut); ?></td>
+			<td><?php echo \lib\Helper::formatION($totalOut); ?></td>
 		</tr>
 		<?php if (stristr($transaction['flags'], 'proof-of-stake') !== false) { ?>
 		<tr>
@@ -53,7 +53,7 @@ $confirmations = $blockHeight - $transaction['block_height'] + 1;
 				}
 				?>
 				Fees</td>
-			<td><?php echo \lib\Helper::formatXPY($created); ?></td>
+			<td><?php echo \lib\Helper::formatION($created); ?></td>
 		</tr>
 		<?php } ?>
 		<?php if (stristr($transaction['flags'], 'proof-of-work') !== false) { ?>
@@ -64,13 +64,13 @@ $confirmations = $blockHeight - $transaction['block_height'] + 1;
 						$created = abs($created);
 					}
 					?> Fees</td>
-				<td><?php echo \lib\Helper::formatXPY($created); ?></td>
+				<td><?php echo \lib\Helper::formatION($created); ?></td>
 			</tr>
 		<?php } ?>
 		<?php if ($transaction['txFee'] > 0) { ?>
 		<tr>
 			<td>Fees</td>
-			<td><?php echo \lib\Helper::formatXPY($transaction['txFee']); ?></td>
+			<td><?php echo \lib\Helper::formatION($transaction['txFee']); ?></td>
 		</tr>
 		<?php } ?>
 	</table>
@@ -120,7 +120,7 @@ $confirmations = $blockHeight - $transaction['block_height'] + 1;
 							$value = $totalOut;
 						} ?>
 
-						<?php echo \lib\Helper::formatXPY($value); ?>
+						<?php echo \lib\Helper::formatION($value); ?>
 					</td>
 				</tr>
 
@@ -156,7 +156,7 @@ $confirmations = $blockHeight - $transaction['block_height'] + 1;
 						<td>
 							<?php echo \lib\Helper::getAddressLink($transactionOut['address']); ?>
 						</td>
-						<td class="text-right"><?php echo \lib\Helper::formatXPY($transactionOut['value'])?></td>
+						<td class="text-right"><?php echo \lib\Helper::formatION($transactionOut['value'])?></td>
 					</tr>
 					<?php
 					$i++;

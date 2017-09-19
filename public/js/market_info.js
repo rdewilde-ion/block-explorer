@@ -39,74 +39,69 @@ function ucwords(str) {
             return $1.toUpperCase();
         });
 }
+
+var btcUsd;
 $( document ).ready(function() {
+    // btcUsd = parseFloat($.jStorage.get('btc-usd'));
 
-    $(function () {
-
-        var usdprice = $.jStorage.get('usd-price');
-        var btcprice = $.jStorage.get('btc-price');
-        var marketcap = $.jStorage.get('market-cap');
-
-        if (usdprice) {
-            $("#market-cap").text("$" + marketcap + " USD");
-            $("#price-usd").text("$" + usdprice + " USD");
-            $("#price-btc").text(btcprice + " BTC");
-            return false;
-        }
-
-        var url = 'https://xpymarket.com/api/info';
+    function marketPoll() {
         $.ajax({
-            url: url,
-            type: "GET",
-            cache: true,
+            url: '/api/bittrex/market',
+            cache: false,
             success: function(data) {
-                console.log("market info");
-//					console.log(data);
+                var btcprice = parseFloat(data.data.Last).toFixed(8);
+                var usdprice = (btcUsd * btcprice).toFixed(2);
 
-                var usdprice = parseFloat(data.price.USD).toFixed(3);
-                var btcprice = parseFloat(data.price.BTC).toFixed(8);
-                var marketcap = addCommas(parseFloat(data.market.market_cap_usd).toFixed(2));
+                // $.jStorage.set('usd-price', usdprice, {TTL: 60000});
+                // $.jStorage.set('btc-price', btcprice, {TTL: 60000});
+                // $.jStorage.set('market-cap', marketcap, {TTL: 60000});
 
-                $.jStorage.set('usd-price', usdprice, {TTL: 60000});
-                $.jStorage.set('btc-price', btcprice, {TTL: 60000});
-                $.jStorage.set('market-cap', marketcap, {TTL: 60000});
-
-                $("#market-cap").text("$" + marketcap + " USD");
+                // $("#market-cap").text("$" + marketcap + " USD");
                 $("#price-usd").text("$" + usdprice + " USD");
                 $("#price-btc").text(btcprice + " BTC");
 
+                setTimeout(marketPoll, 60000);
             },
             dataType: "json",
             timeout: 2000
-        });
-    });
+        })
+    };
 
-    (function marketPoll() {
-        setTimeout(function() {
-            $.ajax({
-                url: "https://xpymarket.com/api/info",
-                cache: true,
-                success: function(data) {
-                    console.log("market info");
-                    //						console.log(data);
+    (function coinmarketcap() {
+        $.ajax({
+            url: 'https://coinmarketcap-nexuist.rhcloud.com/api/ion/',
+            cache: false,
+            success: function(data) {
+                var capUsd = data.market_cap.usd;
+                capUsd = addCommas(parseFloat(capUsd).toFixed(2));
 
-                    var usdprice = parseFloat(data.price.USD).toFixed(3);
-                    var btcprice = parseFloat(data.price.BTC).toFixed(8);
-                    var marketcap = addCommas(parseFloat(data.market.market_cap_usd).toFixed(2));
+                // console.log(capUsd);
+                // $.jStorage.set('marketcap-usd', capUsd, {TTL: 60000});
 
-                    $.jStorage.set('usd-price', usdprice, {TTL: 60000});
-                    $.jStorage.set('btc-price', btcprice, {TTL: 60000});
-                    $.jStorage.set('market-cap', marketcap, {TTL: 60000});
-
-                    $("#market-cap").text("$" + marketcap + " USD");
-                    $("#price-usd").text("$" + usdprice + " USD");
-                    $("#price-btc").text(btcprice + " BTC");
-
-                },
-                dataType: "json",
-                complete: marketPoll,
-                timeout: 2000
-            })
-        }, 60000);
+                $("#market-cap").text("$" + capUsd + " USD");
+            },
+            dataType: "json",
+            timeout: 2000
+        })
     })();
+
+    (function coinmarketcap() {
+        $.ajax({
+            url: 'https://coinmarketcap-nexuist.rhcloud.com/api/btc/price',
+            cache: false,
+            success: function(data) {
+                btcUsd = parseFloat(data.usd).toFixed(4);
+
+                // $.jStorage.set('btc-usd', btcUsd, {TTL: 60000});
+
+                marketPoll();
+            },
+            dataType: "json",
+            timeout: 2000
+        })
+    })();
+
+    $(function () {
+
+    });
 });

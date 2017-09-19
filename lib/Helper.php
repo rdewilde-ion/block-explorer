@@ -11,9 +11,9 @@ namespace lib;
  */
 class Helper {
 
-	public static function formatXPY($xpy) {
+	public static function formatION($ION) {
 
-		return self::formatCoin($xpy, 'XPY');
+		return self::formatCoin($ION, 'ION');
 
 	}
 
@@ -53,8 +53,8 @@ class Helper {
 				if (isset(self::$addressTags[$address])) {
 					$tag = self::$addressTags[$address];
 				} else {
-					$IONDb = new IONDb();
-					$tag = $IONDb->getAddressTag($address);
+					$ionDb = new IONDb();
+					$tag = $ionDb->getAddressTag($address);
 					if ($tag == null) {
 						self::$addressTags[$address] = false;
 					} else {
@@ -65,7 +65,6 @@ class Helper {
 
 			}
 		}
-
 		if (!empty($tag) && $tag['verified'] != 3) {
 			$class = 'label-primary';
 			if ($tag['verified'] == 1) {

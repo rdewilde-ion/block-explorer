@@ -5,17 +5,19 @@ require_once dirname(__FILE__) . '/../conf/constants.php';
 require_once dirname(__FILE__) . '/../bootstrap.php';
 require_once dirname(__FILE__) . '/../conf/config.php';
 $ips[] = '127.0.0.1';
+$ips[] = '172.17.0.1';
+$ips[] = '172.18.0.1';
 
 date_default_timezone_set('UTC');
 
-if (php_sapi_name() != "cli" && in_array($_SERVER['REMOTE_ADDR'], $config['debugbar']['allowips'])) {
-	define('DEBUG_BAR', true);
+//if (php_sapi_name() != "cli" && in_array($_SERVER['REMOTE_ADDR'], $config['debugbar']['allowips'])) {
+//	define('DEBUG_BAR', true);
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
-} else {
-	ini_set('display_errors', '0');
+//} else {
+//	ini_set('display_errors', '0');
 	define('DEBUG_BAR', false);
-}
+//}
 //
 //if (php_sapi_name() != "cli" && !in_array($_SERVER['REMOTE_ADDR'], $ips)) {
 //	include('../views/header.php');

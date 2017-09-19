@@ -23,13 +23,13 @@ class Mysql {
 	protected $debug = true;
 
 	/** @var \PDO  */
-	protected $pdo;
+	public $pdo;
 
 	private function __construct() {
 		/** @var $config array */
 		include(__DIR__ . '/../conf/config.php');
 
-		$dsn = 'mysql:host=localhost;dbname=' . $config['mysql']['database'];
+		$dsn = 'mysql:host='.$config['mysql']['host'].';dbname=' . $config['mysql']['database'];
 		$username = $config['mysql']['user'];
 		$password = $config['mysql']['password'];
 		$options = array(
@@ -180,6 +180,7 @@ class Mysql {
 			$sql = substr($sql, 0, -2);
 
 		}
+		
 		try {
 			$return = $this->pdo->exec($sql);
 		} catch (\PDOException $e) {

@@ -1,0 +1,2 @@
+30 * * * * php ./app/public/index.php /cli/buildRichList >> /tmp/buildRichList.log
+*/1 * * * * php ./app/public/index.php /cli/buildDatabase >> /tmp/buildDatabase.log

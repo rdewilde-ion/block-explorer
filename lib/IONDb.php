@@ -119,6 +119,7 @@ class IONDb {
 		$transactionCount = 0;
 		foreach ($transactions as $transaction) {
 			$transactionCount++;
+
 			$rawTransaction = $ION->getRawTransaction($transaction);
 			$decodedTransaction = $ION->decodeRawTransaction($rawTransaction);
 
@@ -264,21 +265,24 @@ class IONDb {
 		$IONRPC = new IONRPC();
 
 		for ($i = $startBlockHeight; $i <= $endBlockHeight; $i++) {
+			echo '.';
+			if ($i % (($endBlockHeight - $startBlockHeight) / 100) == 0) {
+				echo $i.PHP_EOL;
+			}
 			$blockHash = $IONRPC->getBlockHash($i);
 			$block = $IONRPC->getBlock($blockHash);
-
 
 			$sql = 'UPDATE blocks SET nextblockhash = ' . $this->mysql->escape($block['hash']) .  ' WHERE `height` =' . ($block['height']-1);
 			$this->mysql->query($sql);
 
-			echo "Block Height {$block['height']}" . PHP_EOL;
+//			echo "Block Height {$block['height']}" . PHP_EOL;
 			$blockInsert = array(
+				'height' => $block['height'],
 				'hash' => $block['hash'],
 				'size' => $block['size'],
-				'height' => $block['height'],
 				'version' => $block['version'],
 				'merkleroot' => $block['merkleroot'],
-				'time' => $block['time'],
+				'time' => $block['time'], // date("Y-m-d H:i:s",  )
 				'nonce' => $block['nonce'],
 				'bits' => $block['bits'],
 				'difficulty' => $block['difficulty'],
@@ -291,17 +295,15 @@ class IONDb {
 				'modifier' => $block['modifier'],
 				'modifierchecksum' => $block['modifierchecksum'],
 				'raw' => serialize($block),
-				'timestamp' => strtotime($block['time'])
+				'timestamp' => $block['time']
 			);
 
 			$this->mysql->startTransaction();
 			$transactionsReturn = $this->processTransactions($block);
 
-
 			$blockInsert['transactions'] = $transactionsReturn['transactionCount'];
 			$blockInsert['valueout'] = $transactionsReturn['totalValue'];
 			$blockInsert['valuein'] = $transactionsReturn['totalValueIn'];
-
 
 			$outstanding = bcadd($block['mint'], $outstanding, self::BC_SCALE);
 
@@ -410,6 +412,7 @@ class IONDb {
 	public function getAddressTag($address) {
 		$sql = "SELECT `tag`, `url`, `verified` FROM address_tags"
 			. " WHERE address = " . $this->mysql->escape($address);
+
 		$tagRow = $this->mysql->selectRow($sql, 60);
 		if ($tagRow == null) {
 			return null;
@@ -434,6 +437,7 @@ class IONDb {
 			. " LEFT JOIN address_tags adt ON adt.address = a.address"
 			. " WHERE a.address = " . $this->mysql->escape($address)
 			. " ORDER BY a.id DESC";
+
 		if ($limit > 0 && $limit != 'all') {
 			$sql .= " LIMIT " . (int)$limit;
 		}
@@ -781,7 +785,7 @@ class IONDb {
 				'balance' => $rich['bal'],
 				'block_height' => $rich['block_height'],
 				'time' => $rich['time'],
-				'percent' => $rich['bal'] / $outstanding * 100
+				'percent' => (float)max(0,min(99, round($rich['bal'] / $outstanding * 100, 2)))
 			);
 		}
 
@@ -804,72 +808,72 @@ class IONDb {
 
 	}
 
-	public function getPossibleBidders() {
+//	public function getPossibleBidders() {
+//
+//		$bidders = $this->mysql->selectRow("SELECT COUNT(*) as bidders FROM richlist WHERE balance > " . PRIME_BID_AMOUNT);
+//		return $bidders['bidders'];
+//
+//	}
 
-		$bidders = $this->mysql->selectRow("SELECT COUNT(*) as bidders FROM richlist WHERE balance > " . PRIME_BID_AMOUNT);
-		return $bidders['bidders'];
+//	public function getPrimeBids($limit = 50) {
+//
+//		$primeBid = PRIME_BID_AMOUNT;
+//		$limit = (int) $limit;
+//		$bids = $this->mysql->select("SELECT * FROM address_tags tags JOIN richlist r ON r.address = tags.address
+//			WHERE verified = 1 AND tag LIKE 'primebid%' and balance > $primeBid ORDER BY balance DESC LIMIT $limit ", 60);
+//
+//		$rank = 1;
+//		foreach ($bids as &$bid) {
+//			$bid['bidrank'] = $rank;
+//			$bid['balance'] = $this->getAddressBalance($bid['address']);
+//			$bid['bid'] = $bid['balance'] - $primeBid;
+//			$rank++;
+//		}
+//
+//
+//
+//		return $bids;
+//
+//	}
 
-	}
-
-	public function getPrimeBids($limit = 50) {
-
-		$primeBid = PRIME_BID_AMOUNT;
-		$limit = (int) $limit;
-		$bids = $this->mysql->select("SELECT * FROM address_tags tags JOIN richlist r ON r.address = tags.address
-			WHERE verified = 1 AND tag LIKE 'primebid%' and balance > $primeBid ORDER BY balance DESC LIMIT $limit ", 60);
-
-		$rank = 1;
-		foreach ($bids as &$bid) {
-			$bid['bidrank'] = $rank;
-			$bid['balance'] = $this->getAddressBalance($bid['address']);
-			$bid['bid'] = $bid['balance'] - $primeBid;
-			$rank++;
-		}
-
-
-
-		return $bids;
-
-	}
-
-
-	public function primeStakes($limit) {
-
-		$limit = (int) $limit;
-
-		$primeStakes = $this->mysql->select("SELECT txidp as txid, asm FROM transactions_out tro
-			WHERE asm LIKE 'OP_PRIME%' ORDER BY tro.id DESC LIMIT $limit", 60);
-
-
-		$txIds = array();
-		foreach ($primeStakes as &$primeStake) {
-			$txIds[] = $primeStake['txid'];
-		}
-		if (count($txIds) == 0) {
-			return array();
-		}
-		$rows = $this->mysql->select("SELECT t.txid, block_height, t.time, b.hash, address, b.mint AS `value`
-				FROM transactions t
-				JOIN blocks b ON b.height=t.block_height
-				JOIN transactions_out tro ON t.`txid` = tro.`txidp` AND address IS NOT NULL
-				WHERE t.txid " . $this->mysql->getInClause($txIds), 60);
-
-		$blocks = array();
-		foreach ($rows as $row) {
-			$blocks[$row['txid']] = $row;
-		}
-
-		foreach ($primeStakes as &$primeStake) {
-			$primeStake['address'] = $blocks[$primeStake['txid']]['address'];
-			$primeStake['hash'] = $blocks[$primeStake['txid']]['hash'];
-			$primeStake['block_height'] = $blocks[$primeStake['txid']]['block_height'];
-			$primeStake['time'] = $blocks[$primeStake['txid']]['time'];;
-			$primeStake['OP'] = substr($primeStake['asm'], 0, 15);
-			$primeStake['value'] = $blocks[$primeStake['txid']]['value'];
-		}
-		return $primeStakes;
-
-	}
+//
+//	public function primeStakes($limit) {
+//
+//		$limit = (int) $limit;
+//
+//		$primeStakes = $this->mysql->select("SELECT txidp as txid, asm FROM transactions_out tro
+//			WHERE asm LIKE 'OP_PRIME%' ORDER BY tro.id DESC LIMIT $limit", 60);
+//
+//
+//		$txIds = array();
+//		foreach ($primeStakes as &$primeStake) {
+//			$txIds[] = $primeStake['txid'];
+//		}
+//		if (count($txIds) == 0) {
+//			return array();
+//		}
+//		$rows = $this->mysql->select("SELECT t.txid, block_height, t.time, b.hash, address, b.mint AS `value`
+//				FROM transactions t
+//				JOIN blocks b ON b.height=t.block_height
+//				JOIN transactions_out tro ON t.`txid` = tro.`txidp` AND address IS NOT NULL
+//				WHERE t.txid " . $this->mysql->getInClause($txIds), 60);
+//
+//		$blocks = array();
+//		foreach ($rows as $row) {
+//			$blocks[$row['txid']] = $row;
+//		}
+//
+//		foreach ($primeStakes as &$primeStake) {
+//			$primeStake['address'] = $blocks[$primeStake['txid']]['address'];
+//			$primeStake['hash'] = $blocks[$primeStake['txid']]['hash'];
+//			$primeStake['block_height'] = $blocks[$primeStake['txid']]['block_height'];
+//			$primeStake['time'] = $blocks[$primeStake['txid']]['time'];;
+//			$primeStake['OP'] = substr($primeStake['asm'], 0, 15);
+//			$primeStake['value'] = $blocks[$primeStake['txid']]['value'];
+//		}
+//		return $primeStakes;
+//
+//	}
 
 	public function getLatestAddressTransactions($limit = 100) {
 		$limit = (int) $limit;
@@ -1008,14 +1012,14 @@ class IONDb {
 
 	public function updateNetworkInfo() {
 
-		$ION = new IONRPC('dnsseed');
+		$ION = new IONRPC(); // FIXME
 		$peers = $ION->getPeerInfo();
 		if (count($peers) > 0) {
 			$this->updatePeers($peers);
 		}
 
-		$ION = new IONRPC('YoshiRpi1');
-		$peers = $ION->getPeerInfo();
+//		$ION = new IONRPC('YoshiRpi1');
+//		$peers = $ION->getPeerInfo();
 		var_dump($peers);
 	}
 
@@ -1028,7 +1032,7 @@ class IONDb {
 
 			list($ip, $post) = explode(':', $peer['addr']);
 			$geoInfo = $maxMind->getGeoInfo($ip);
-			sleep(.5);
+			sleep(.2);
 			$insert['country_code'] = $geoInfo['countryCode'];
 			$insert['country_name'] = $geoInfo['countryName'];
 			$insert['state'] = $geoInfo['state'];
@@ -1047,9 +1051,8 @@ class IONDb {
 	public function getNetwork() {
 		$since = mktime(0, 0, 0) - (24 * 60 * 60);
 
-		$sql = "SELECT COUNT(*) as connections, network.*  FROM network
+		$sql = "SELECT COUNT(*) as connections FROM network
 			WHERE lastsend > $since OR lastrecv > $since GROUP BY subver order by connections desc";
-
 
 		$subVersions = $this->mysql->select($sql, 60);
 		$totalConnections = 0;
@@ -1073,7 +1076,7 @@ class IONDb {
 	public function getNetworkByCity($limit) {
 		$since = mktime(0, 0, 0) - (24 * 10 * 60 * 60);
 
-		$sql = "SELECT COUNT(*) as connections, network.*  FROM network
+		$sql = "SELECT COUNT(*) as connections, country_code, city, state  FROM network
 			WHERE lastsend > $since OR lastrecv > $since GROUP BY country_code, city, state order by connections desc limit $limit";
 
 		$network = $this->mysql->select($sql, 60);

@@ -66,7 +66,7 @@ $chart = $this->getData('chart', 'outstanding');
 					},
 					series: [
 						{
-							name: 'XPY',
+							name: 'ION',
 							data: data,
 							threshold : null,
 							type : 'area',

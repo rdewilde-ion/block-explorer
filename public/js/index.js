@@ -11,13 +11,13 @@ $( document ).ready(function() {
 
             console.log(data)
             blockHeight = data.data[0].height;
-            $("#outstanding").text(addCommas((data.data[0]['outstanding']*1).toString()) + ' XPY');
+            $("#outstanding").text(addCommas((data.data[0]['outstanding']*1).toString()) + ' ION');
             $.each(data.data, function(index, value) {
 
-                var extractedBy = value['flags'];
-                var extractedBy = extractedBy.replace('stake-modifier', " ");
-                var extractedBy = extractedBy.replace(/-/g, " ");
-                var extractedBy = ucwords(extractedBy);
+                // var extractedBy = value['flags'];
+                // var extractedBy = extractedBy.replace('stake-modifier', " ");
+                // var extractedBy = extractedBy.replace(/-/g, " ");
+                // var extractedBy = ucwords(extractedBy);
                 var date = new Date(value['timestamp']*1000);
                 var date = date.toString().replace(/GMT.*/g,'');
 
@@ -25,9 +25,9 @@ $( document ).ready(function() {
                 $('#tr_' + value['hash']).append( "<td><a href=\"/block/"+value['hash']+"\">" + value['height'] +"</a></td>" )
                     .append( "<td><time class='timeago' datetime='" + date + "'>" + date + "</time></td>" )
                     .append( "<td>" + value['transactions'] +"</td>" )
-                    .append( "<td>" + addCommas((value['valueout']*1).toString()) +" XPY</td>" )
-                    .append( "<td>" + value['difficulty'] +"</td>" )
-                    .append( "<td>" + extractedBy + "</td>" );
+                    .append( "<td>" + addCommas((value['valueout']*1).toString()) +" ION</td>" )
+                    // .append( "<td>" + value['difficulty'] +"</td>" )
+                    // .append( "<td>" + extractedBy + "</td>" );
                 $('#tr_' + value['hash']).click( function() {
                     window.location.href='/block/' + value['hash'];
                 } );
@@ -48,28 +48,26 @@ $( document ).ready(function() {
                     console.log("polling");
 //						console.log(data);
                     blockHeight = data.data[0].height; // Store Blockheight
-                    $("#outstanding").text(addCommas((data.data[0]['outstanding']*1).toString()) + ' XPY');
+                    $("#outstanding").text(addCommas((data.data[0]['outstanding']*1).toString()) + ' ION');
                     $.each(data.data, function(index, value) {
-
-                        var extractedBy = value['flags'];
-                        var extractedBy = extractedBy.replace('stake-modifier', " ");
-                        var extractedBy = extractedBy.replace(/-/g, " ");
-                        var extractedBy = ucwords(extractedBy);
+                        // var extractedBy = value['flags'];
+                        // var extractedBy = extractedBy.replace('stake-modifier', " ");
+                        // var extractedBy = extractedBy.replace(/-/g, " ");
+                        // var extractedBy = ucwords(extractedBy);
                         var date = new Date(value['timestamp']*1000);
                         var date = date.toString().replace(/GMT.*/g,'');
 
                         //check if
 
                         if ( !$('#tr_' + value['hash']).length ) {
-                            console.log('new block!');
                             $("#latestTransactions tbody").prepend( "<tr style=\"background-color: #00EF00;\" id=\"tr_" + value['hash'] +"\"></tr>" );
                             $('#tr_' + value['hash']).hide();
                             $('#tr_' + value['hash']).html( "<td><a href=\"/block/"+value['hash']+"\">" + value['height'] +"</a></td>" )
                                 .append( "<td><time class='timeago' datetime='" + date + "'>" + date + "</time></td>" )
                                 .append( "<td>" + value['transactions'] +"</td>" )
-                                .append( "<td>" + addCommas((value['valueout']*1).toString()) +" XPY</td>" )
-                                .append( "<td>" + value['difficulty'] +"</td>" )
-                                .append( "<td>" + extractedBy + "</td>" );
+                                .append( "<td>" + addCommas((value['valueout']*1).toString()) +" ION</td>" )
+                                // .append( "<td>" + value['difficulty'] +"</td>" )
+                                // .append( "<td>" + extractedBy + "</td>" );
                             $('#tr_' + value['hash']).click( function() {
                                 window.location.href='/block/' + value['hash'];
                             } );

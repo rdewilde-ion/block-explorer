@@ -94,7 +94,7 @@ $addressInformation = $this->getData('addressInformation');
 		</tr>
 		<tr>
 			<td>Balance</td>
-			<td><strong><?php echo \lib\Helper::formatXPY($addressInformation['balance']); ?></strong></td>
+			<td><strong><?php echo \lib\Helper::formatION($addressInformation['balance']); ?></strong></td>
 		</tr>
 		<?php if ($addressInformation['rank'] > 0) { ?>
 		<tr>
@@ -105,25 +105,25 @@ $addressInformation = $this->getData('addressInformation');
 		<?php if (isset($addressInformation['totalInTransactions'])) { ?>
 		<tr>
 			<td>Received</td>
-			<td><?php echo \lib\Helper::formatXPY($addressInformation['totalInValue']); ?> in <?php echo $addressInformation['totalInTransactions'] ?> transactions</td>
+			<td><?php echo \lib\Helper::formatION($addressInformation['totalInValue']); ?> in <?php echo $addressInformation['totalInTransactions'] ?> transactions</td>
 		</tr>
 		<?php } ?>
 		<?php if (isset($addressInformation['totalOutTransactions'])) { ?>
 		<tr>
 			<td>Sent</td>
-			<td><?php echo \lib\Helper::formatXPY($addressInformation['totalOutValue']); ?> in <?php echo $addressInformation['totalOutTransactions'] ?> transactions</td>
+			<td><?php echo \lib\Helper::formatION($addressInformation['totalOutValue']); ?> in <?php echo $addressInformation['totalOutTransactions'] ?> transactions</td>
 		</tr>
 		<?php } ?>
 		<?php if (isset($addressInformation['totalStakeTransactions'])) {  ?>
 		<tr>
 			<td>Staked</td>
-			<td><?php echo \lib\Helper::formatXPY($addressInformation['totalStakeValue']); ?> in <?php echo $addressInformation['totalStakeTransactions'] ?> transactions</td>
+			<td><?php echo \lib\Helper::formatION($addressInformation['totalStakeValue']); ?> in <?php echo $addressInformation['totalStakeTransactions'] ?> transactions</td>
 		</tr>
 		<?php } ?>
 		<?php if (isset($addressInformation['totalCreationTransactions'])) {  ?>
 			<tr>
 				<td>Mined</td>
-				<td><?php echo \lib\Helper::formatXPY($addressInformation['totalCreationValue']); ?> in <?php echo $addressInformation['totalCreationTransactions'] ?> transactions</td>
+				<td><?php echo \lib\Helper::formatION($addressInformation['totalCreationValue']); ?> in <?php echo $addressInformation['totalCreationTransactions'] ?> transactions</td>
 			</tr>
 		<?php } ?>
 		<?php if (isset($addressInformation['totalTransactions'])) {  ?>
@@ -181,7 +181,7 @@ $addressInformation = $this->getData('addressInformation');
 					echo '<span class="addressSend">';
 				}
 				?>
-				<?php echo \lib\Helper::formatXPY($t['value']);
+				<?php echo \lib\Helper::formatION($t['value']);
 				echo '</span>';
 				if ($t['type'] == 'stake') {
 					echo '<span class="label label-info" style="margin-left: 15px">Stake</span>';
@@ -189,7 +189,7 @@ $addressInformation = $this->getData('addressInformation');
 
 				?>
 			</td>
-			<td class="text-right"><?php echo \lib\Helper::formatXPY($t['balance']) ?></td>
+			<td class="text-right"><?php echo \lib\Helper::formatION($t['balance']) ?></td>
 		</tr>
 		<?php } ?>
 		</tbody>

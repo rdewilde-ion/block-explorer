@@ -37,7 +37,6 @@ if ($block != null) {
 ?>
 
 <div class="my-template">
-
 	<?php $this->render('page_header'); ?>
 
 
@@ -76,25 +75,25 @@ if ($block != null) {
 			<td>Transactions</td><td><?php echo $block['transactions']; ?></td>
 		</tr>
 		<tr>
-			<td>Value Out</td><td><?php echo \lib\Helper::formatXPY($block['valueout']); ?></td>
+			<td>Value Out</td><td><?php echo \lib\Helper::formatION($block['valueout']); ?></td>
 		</tr>
 		<tr>
 			<td>Difficulty</td><td><?php echo $block['difficulty']; ?></td>
 		</tr>
 		<tr>
-			<td>Outstanding</td><td><?php echo \lib\Helper::formatXPY($block['outstanding']); ?></td>
+			<td>Outstanding</td><td><?php echo \lib\Helper::formatION($block['outstanding']); ?></td>
 		</tr>
 
 
 		<?php //if (strstr($block['flags'], 'Stake') == false) { ?>
 		<?php if ($created > 0) { ?>
 			<tr>
-				<td><strong>Created</strong></td><td><?php echo \lib\Helper::formatXPY($created); ?></td>
+				<td><strong>Created</strong></td><td><?php echo \lib\Helper::formatION($created); ?></td>
 			</tr>
 		<?php } ?>
 		<?php if ($destroyed < 0) { ?>
 			<tr>
-				<td><strong>Destroyed</strong></td><td><?php echo \lib\Helper::formatXPY($destroyed); ?></td>
+				<td><strong>Destroyed</strong></td><td><?php echo \lib\Helper::formatION($destroyed); ?></td>
 			</tr>
 		<?php } ?>
 		<?php
@@ -128,7 +127,7 @@ if ($block != null) {
 						foreach ($transaction['vout'] as $out) {
 							$total += $out['value'];
 						}
-						echo \lib\Helper::formatXPY($total); ?>
+						echo \lib\Helper::formatION($total); ?>
 					</td>
 					<td>
 						<table style="width: 100%">
@@ -141,7 +140,7 @@ if ($block != null) {
 								<td>
 									<?php echo \lib\Helper::getAddressLink($in['address']); ?>
 								</td>
-								<td class="text-right"><?php echo \lib\Helper::formatXPY($in['value']); ?></td>
+								<td class="text-right"><?php echo \lib\Helper::formatION($in['value']); ?></td>
 							</tr>
 							<?php
 							}
@@ -155,7 +154,7 @@ if ($block != null) {
 								if ($out['type'] == 'nonstandard' && $i == 0 && $k == 0) {
 									echo "<tr><td>Included in following transaction(s)</td>"
 										. "<td class='text-right'>"
-										. \lib\Helper::formatXPY($created)."</td>";
+										. \lib\Helper::formatION($created)."</td>";
 									continue;
 								}
 								if (empty($out['address'])) {
@@ -165,7 +164,7 @@ if ($block != null) {
 
 							<tr>
 								<td><?php echo \lib\Helper::getAddressLink($out['address']); ?></td>
-								<td class="text-right"><?php echo \lib\Helper::formatXPY($out['value']) ?></td>
+								<td class="text-right"><?php echo \lib\Helper::formatION($out['value']) ?></td>
 							</tr>
 							<?php } ?>
 						</table>

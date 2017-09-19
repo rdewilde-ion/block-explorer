@@ -53,9 +53,9 @@ $( document ).ready(function() {
         $('#qrcode').qrcode({
             size: 150,
 
-            "color": "#087094",
+            "color": "black",
             "text": address,
-            fill: '#087094'
+            fill: 'black'
 
     });
     });

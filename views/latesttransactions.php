@@ -32,7 +32,7 @@ $addressTagMap = $this->getData('addressTagMap');
 					} else {
 						echo '<span class="addressSend">';
 					}
-					echo \lib\Helper::formatXPY($transaction['value']) ?></span>
+					echo \lib\Helper::formatION($transaction['value']) ?></span>
 				</td>
 				<td ><?php echo \lib\Helper::getAddressLink($transaction['address'], $addressTagMap) ?></td>
 			</tr>

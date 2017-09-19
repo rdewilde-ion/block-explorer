@@ -17,11 +17,9 @@ class MaxMind {
 		$this->url =  $config['maxmind']['url'];;
 		$this->user = $config['maxmind']['user'];
 		$this->password = $config['maxmind']['password'];
-
 	}
 
 	public function getGeoInfo($ip) {
-
 		$cache = Cache::getInstance();
 		$return = $cache->get('geo:' . $ip);
 		if ($cache->wasResultFound()) {
@@ -42,16 +40,16 @@ class MaxMind {
 		$return = array(
 			'countryCode' => $json->country->iso_code,
 			'countryName' => $json->country->names->en,
-			'state' => $json->subdivisions[0]->names->en,
-			'city' => $json->city->names->en,
+//			'state' => $json->subdivisions[0]->names->en,
+//			'city' => $json->city->names->en,
 		);
 		if (empty($return['city'])) {
-			$return['city'] = 'Unknown';
+			$return['city'] = '';
 		}
 		if (empty($return['state'])) {
-			$return['state'] = 'Unknown';
+			$return['state'] = '';
 		}
-		$cache->set('geo:' . $ip, $return, 3600);
+		$cache->set('geo:' . $ip, $return, 3600 * 24 * 365);
 		return $return;
 	}
 

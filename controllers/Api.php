@@ -124,6 +124,18 @@ class Api extends Controller {
 		$this->outputJsonResponse($primeStakes);
 	}
 
+	public function getBittrexMarket() {
+		// TODO cache time
+		$response = file_get_contents('https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-ion');
+
+		$data = json_decode($response);
+
+		$this->outputJsonResponse($data->result[0]);
+	}
+
+	public function getCoinmarketcap() {
+	}
+
 	private function getLimit($default = 100, $max = 10000) {
 		$limit = $this->bootstrap->httpRequest->get('limit');
 		if (!$limit) {

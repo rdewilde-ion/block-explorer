@@ -2,11 +2,10 @@
 	<div class="my-template">
 
 		<?php $this->render('page_header'); ?>
-
-		<div class="alert alert-success alert-dismissible" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			Prime Bidding is now open.  <a target="_blank" style="color: blue" href="https://prime.ionomy.com">https://prime.ionomy.com</a>
-		</div>
+<!---->
+<!--		<div class="alert alert-success alert-dismissible" role="alert">-->
+<!--			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--		</div>-->
 
 		<?php $this->render('market_info'); ?>
 
@@ -20,8 +19,8 @@
 				<th>Time</th>
 				<th>Transactions</th>
 				<th>Value Out</th>
-				<th>Difficulty</th>
-				<th>Extracted By</th>
+<!--				<th>Difficulty</th>-->
+<!--				<th>Extracted By</th>-->
 			</tr>
 			</thead>
 			<tbody>

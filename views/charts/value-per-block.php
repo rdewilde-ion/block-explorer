@@ -58,7 +58,7 @@ $limit = $this->getData('limit');
 //					},
 					tooltip: {
 						headerFormat: '<b>Block: </b>{point.x}<br>',
-						valueSuffix: ' XPY'
+						valueSuffix: ' ION'
 
 						//pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
 					},

@@ -21,8 +21,8 @@ class IONRPC {
 		/** @var $config array */
 		include(__DIR__ . '/../conf/config.php');
 		if ($server == null) {
-			$rpcUrl = 'http://' . $config['ionDb']['rpcuser'] . ':' . $config['ionDb']['rpcpassword'] .
-				'@' . $config['ionDb']['rpchost'] . ':' . $config['ionDb']['rpcport'] . '/';
+			$rpcUrl = 'http://' . $config['iond']['rpcuser'] . ':' . $config['iond']['rpcpassword'] .
+				'@' . $config['iond']['rpchost'] . ':' . $config['iond']['rpcport'] . '/';
 		} else {
 			$rpcUrl = 'http://' . $config['networknodes'][$server]['rpcuser'] . ':' . $config['networknodes'][$server]['rpcpassword'] .
 				'@' . $config['networknodes'][$server]['rpchost'] . ':' . $config['networknodes'][$server]['rpcport'] . '/';

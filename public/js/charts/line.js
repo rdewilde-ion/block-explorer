@@ -42,7 +42,7 @@ $( document ).ready(function() {
 
             series: [
                 {
-                    name: 'XPY',
+                    name: 'ION',
                     data: data,
                     threshold : null,
                     type : 'line',

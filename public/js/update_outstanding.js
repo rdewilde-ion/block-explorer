@@ -8,7 +8,7 @@ $(document).ready(function () {
 
             console.log(data)
             blockHeight = data.data[0].height;
-            $("#outstanding").text(addCommas((data.data[0]['outstanding'] * 1).toString()) + ' XPY');
+            $("#outstanding").text(addCommas((data.data[0]['outstanding'] * 1).toString()) + ' ION');
 
 
         });
@@ -23,7 +23,7 @@ $(document).ready(function () {
                     console.log("polling");
                     //						console.log(data);
                     blockHeight = data.data[0].height; // Store Blockheight
-                    $("#outstanding").text(addCommas((data.data[0]['outstanding'] * 1).toString()) + ' XPY');
+                    $("#outstanding").text(addCommas((data.data[0]['outstanding'] * 1).toString()) + ' ION');
 
                 },
                 dataType: "json",

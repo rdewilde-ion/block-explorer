@@ -60,13 +60,16 @@ if (isset($this)) {
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
+						<li>
+							<div class="logo"></div>
+						</li>
 						<?php
 						$menuItems = array(
 							array('href' => '/', 'name' => 'Home'),
-//							array('href' => '/about', 'name' => 'About'),
 							array('href' => '/api', 'name' => 'API'),
 							array('href' => '/tagging', 'name' => 'Address Tagging'),
 							array('href' => '/faq', 'name' => 'FAQ'),
+							array('href' => '/about', 'name' => 'About'),
 							array('href' => '/contact', 'name' => 'Contact'),
 						);
 
@@ -79,7 +82,19 @@ if (isset($this)) {
 							echo '</a></li>';
 						}
 						?>
+						<li>
+							<form id="searchform" method="get" action="/search/" style="display: inline-block">
+								<input name="q" type="text" placeholder="Search address, block, transaction, tag..."  value="<?php echo htmlspecialchars($q); ?>">
+								<button class="btn btn-default" type="submit">
+									<span class="glyphicon glyphicon-search"></span>
+								</button>
+							</form>
+						</li>
 					</ul>
+					<?php
+					$q = $this->getData('q', '');
+					?>
+
 				</div><!--/.nav-collapse -->
 			</div>
 		</nav>

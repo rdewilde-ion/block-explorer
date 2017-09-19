@@ -15,7 +15,7 @@
 		<tbody>
 			<tr>
 				<td><strong>Name (Tag)</strong></td>
-				<td>ION (XPY)</td>
+				<td>ION (ION)</td>
 			</tr>
 			<tr>
 				<td><strong>Algorithm</strong></td>
@@ -23,15 +23,15 @@
 			</tr>
 			<tr>
 				<td><strong>Website</strong></td>
-				<td><a href="https://www.ionomy.com/">https://www.ionomy.com/</a></td>
+				<td><a href="https://www.ionomy.com/">https://www.ionomy.com</a></td>
 			</tr>
 			<tr>
 				<td><strong>Forums</strong></td>
-				<td><a href="https://talk.ionomy.com/">https://talk.ionomy.com/</a></td>
+				<td><a href="https://ion.community/">https://ion.community</a></td>
 			</tr>
 			<tr>
 				<td><strong>Twitter</strong></td>
-				<td><a href="https://twitter.com/XPYFoundation">https://twitter.com/XPYFoundation</a></td>
+				<td><a href="https://twitter.com/ionomy">https://twitter.com/ionomy</a></td>
 			</tr>
 
 

@@ -17,11 +17,10 @@ class Cli extends Controller {
 	const NETWORK_LOCK_FILE = "/tmp/getNetworkInfo.lock";
 
 	public function getNetworkInfo() {
-
-
 		if (!$this->tryLock(self::NETWORK_LOCK_FILE)) {
 			die("Already running.\n");
 		}
+		register_shutdown_function('unlink', self::NETWORK_LOCK_FILE);
 
 		$ionDb = new IONDb();
 		$ionDb->updateNetworkInfo();
