@@ -186,6 +186,8 @@ class Mysql {
 		} catch (\PDOException $e) {
 			if ($e->getCode() == 23000) { //duplicate
 				$return = false;
+			} else {
+				throw $e;
 			}
 		}
 

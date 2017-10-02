@@ -6,18 +6,19 @@
 
 	<div class="panel panel-default text-left">
 		<div class="panel-body">
-			<h4 >Coming Soon.</h4>
+			<h4 >Endpoints</h4>
+			<pre class="text-left">
+				/api/latestblocks
+				/api/latesttransactions
+				/api/richlist
+				/api/block/{blockhash}
+				/api/transaction/(transactionId}
+				/api/address/{address}
+				/api/bittrex/marketsummary/{currency}
+				/api/coinmarketcap/{currency}
+			</pre>
 		</div>
 	</div>
-<!--<pre class="text-left">-->
-<!--/api/latestblocks-->
-<!--/api/latesttransactions-->
-<!--/api/richlist-->
-<!--/api/primestakes-->
-<!--/api/block/{blockhash}-->
-<!--/api/transaction/(transactionId}-->
-<!--/api/address/{address}-->
-<!--</pre>-->
 
 
 

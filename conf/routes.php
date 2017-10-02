@@ -28,11 +28,10 @@ $routeCollection->add('transactionsPerBlock', new Routing\Route('/charts/block/t
 $routeCollection->add('valuePerBlock', new Routing\Route('/charts/block/value', array("class" => "\\controllers\\Chart")));
 $routeCollection->add('getChartData', new Routing\Route('/api/charts/{chart}', array("class" => "\\controllers\\Chart")));
 
-$routeCollection->add('getBittrexMarket', new Routing\Route('/api/bittrex/market', array('class' => '\\controllers\Api')));
+//$routeCollection->add('getBittrexMarket', new Routing\Route('/api/bittrex/market', array('class' => '\\controllers\Api')));
 $routeCollection->add('getTransaction', new Routing\Route('/api/transaction/{txid}', array("class" => "\\controllers\\Api")));
 $routeCollection->add('getAddress', new Routing\Route('/api/address/{address}', array("class" => "\\controllers\\Api")));
 $routeCollection->add('getRichlist', new Routing\Route('/api/richlist', array("class" => "\\controllers\\Api")));
-$routeCollection->add('getPrimeStakes', new Routing\Route('/api/primestakes', array("class" => "\\controllers\\Api")));
 $routeCollection->add('getBlockByHeight', new Routing\Route('/api/blockheight/{height}', array("class" => "\\controllers\\Api")));
 $routeCollection->add('getBlockByHash', new Routing\Route('/api/block/{hash}', array("class" => "\\controllers\\Api")));
 $routeCollection->add('getLatestBlocks', new Routing\Route('/api/latestblocks', array("class" => "\\controllers\\Api")));
@@ -41,6 +40,9 @@ $routeCollection->add('tagAddress', new Routing\Route('/api/tagaddress', array("
 $routeCollection->add('disputeAddressTag', new Routing\Route('/api/disputeaddresstag', array("class" => "\\controllers\\Api")));
 $routeCollection->add('info', new Routing\Route('/api/info', array("class" => "\\controllers\\Api")));
 $routeCollection->add('nodes', new Routing\Route('/api/nodes', array("class" => "\\controllers\\Api")));
+$routeCollection->add('getBittrexTicker', new Routing\Route('/api/bittrex/ticker/{currency}', array('class' => '\\controllers\\Api')));
+$routeCollection->add('getBittrexMarket', new Routing\Route('/api/bittrex/marketsummary/{currency}', array('class' => '\\controllers\\Api')));
+$routeCollection->add('getCoinmarketcap', new Routing\Route('/api/coinmarketcap/{currency}', array('class' => '\\controllers\\Api')));
 
 $routeCollection->add('buildDatabase', new Routing\Route('/cli/buildDatabase', array("class" => "\\controllers\\Cli")));
 $routeCollection->add('buildWalletDatabase', new Routing\Route('/cli/buildWalletDatabase', array("class" => "\\controllers\\Cli")));

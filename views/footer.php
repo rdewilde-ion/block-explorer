@@ -1,15 +1,11 @@
-</div><!-- /.container -->
-
-<footer class="footer navbar-bottom ">
-	<div class="container text-center">
-		<div class="row">
-			<div class="col-sm-12 text-left" >Copyright ©  <?= date('Y') ?></div>
-<!--			<div class="col-sm-6">-->
-<!--				<span class="pull-right"><small>ION donations are highly appreciated: </small><kbd><a href="/address/"></a></kbd></span>-->
-<!--			</div>-->
+				</div>
+			</div>
 		</div>
+
+
 	</div>
-</footer>
+	<!-- /#page-content-wrapper -->
+</div><!-- /.wrapper -->
 
 <script type="application/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="application/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js" async></script>
@@ -32,6 +28,21 @@ if (isset($this)) {
 	ga('create', 'UA-63797741-1', 'auto');
 	ga('send', 'pageview');
 
+</script>
+
+<!-- Menu Toggle Script -->
+<script>
+	$(function(){
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+
+		if($link = $('li.dropdown ul.dropdown-menu li a[href="' + $(location).attr('href').substring($(location).attr('href').lastIndexOf('/') + 1) +'"]'))
+		{
+			$link.closest('.dropdown').addClass('active open');
+		}
+	});
 </script>
 
 <?php

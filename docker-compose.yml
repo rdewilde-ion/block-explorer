@@ -3,7 +3,7 @@ services:
     web:
         image: nginx:latest
         ports:
-            - "8000:80"
+            - "80:80"
             - "3000:443"
         restart: always
         volumes:
@@ -22,7 +22,7 @@ services:
     composer:
         image: "composer"
         volumes:
-            - "./web/app:/app"
+            - "./web:/app"
         command: install
 #    myadmin:
 #        image: phpmyadmin/phpmyadmin
@@ -52,10 +52,16 @@ services:
             - "./data/db/mysql:/var/lib/mysql"
     iond:
         image: rdewilde/iond
+        container_name: iond
         ports:
             - "12700:12700"
+            - "12705:12705"
         restart: always
         env_file:
             - ".env"
         volumes:
             - "./ioncoin/:/root/.ioncoin/"
+    memcached:
+        image: memcached
+        container_name: memcached
+        command: memcached -m 128m

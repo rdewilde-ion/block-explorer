@@ -57,7 +57,7 @@ if ($block != null) {
 			</td>
 		</tr>
 		<tr>
-			<td>Date/Time</td><td><?php echo \lib\Helper::getLocalDateTime($block['time']); ?> extracted by
+			<td>Date/Time</td><td><?php echo \lib\Helper::formatTime($block['timestamp']); ?> extracted by
 			<?php
 
 			if (strstr($block['flags'], 'stake') == false) {

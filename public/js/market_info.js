@@ -40,66 +40,84 @@ function ucwords(str) {
         });
 }
 
-var btcUsd;
+
 $( document ).ready(function() {
-    // btcUsd = parseFloat($.jStorage.get('btc-usd'));
+    var btcprice = 0;//parseFloat($.jStorage.get('btc-price'));
+    var usdprice = parseFloat($.jStorage.get('usd-price'));
+    var capUsd = parseFloat($.jStorage.get('marketcap-usd'));
+    // var btcUsd = parseFloat($.jStorage.get('btc-usd'));
 
-    function marketPoll() {
-        $.ajax({
-            url: '/api/bittrex/market',
-            cache: false,
-            success: function(data) {
-                var btcprice = parseFloat(data.data.Last).toFixed(8);
-                var usdprice = (btcUsd * btcprice).toFixed(2);
+    (function marketPoll() {
+        btcprice = parseFloat($.jStorage.get('btc-price'));
 
-                // $.jStorage.set('usd-price', usdprice, {TTL: 60000});
-                // $.jStorage.set('btc-price', btcprice, {TTL: 60000});
-                // $.jStorage.set('market-cap', marketcap, {TTL: 60000});
+        // if (capUsd > 0 && btcprice > 0 && usdprice > 0) {
+        //     setTimeout(marketPoll, 10000);
+        // } else {
+            $.ajax({
+                url: '/api/coinmarketcap/ion',
+                cache: false,
+                success: function (data) {
+                    capUsd = data.data.market_cap_usd;
+                    capUsd = addCommas(parseFloat(capUsd).toFixed(2));
+                    btcprice = parseFloat(data.data.price_btc).toFixed(8);
+                    usdprice = parseFloat(data.data.price_usd).toFixed(2);
 
-                // $("#market-cap").text("$" + marketcap + " USD");
-                $("#price-usd").text("$" + usdprice + " USD");
-                $("#price-btc").text(btcprice + " BTC");
+                    $.jStorage.set('marketcap-usd', capUsd, {TTL: 60000});
+                    $.jStorage.set('usd-price', usdprice, {TTL: 60000});
+                    $.jStorage.set('btc-price', btcprice, {TTL: 60000});
 
-                setTimeout(marketPoll, 60000);
-            },
-            dataType: "json",
-            timeout: 2000
-        })
-    };
+                    $("#market-cap").text("$" + capUsd + " USD");
+                    $("#price-usd").text("$" + usdprice + " USD");
+                    $("#price-btc").text(btcprice + " BTC");
 
-    (function coinmarketcap() {
-        $.ajax({
-            url: 'https://coinmarketcap-nexuist.rhcloud.com/api/ion/',
-            cache: false,
-            success: function(data) {
-                var capUsd = data.market_cap.usd;
-                capUsd = addCommas(parseFloat(capUsd).toFixed(2));
-
-                // console.log(capUsd);
-                // $.jStorage.set('marketcap-usd', capUsd, {TTL: 60000});
-
-                $("#market-cap").text("$" + capUsd + " USD");
-            },
-            dataType: "json",
-            timeout: 2000
-        })
+                    setTimeout(marketPoll, 60000);
+                },
+                dataType: "json",
+                timeout: 2000
+            });
+        // }
     })();
-
-    (function coinmarketcap() {
-        $.ajax({
-            url: 'https://coinmarketcap-nexuist.rhcloud.com/api/btc/price',
-            cache: false,
-            success: function(data) {
-                btcUsd = parseFloat(data.usd).toFixed(4);
-
-                // $.jStorage.set('btc-usd', btcUsd, {TTL: 60000});
-
-                marketPoll();
-            },
-            dataType: "json",
-            timeout: 2000
-        })
-    })();
+    //
+    // if () {
+    //     (function coinmarketcapIon() {
+    //         $.ajax({
+    //             url: '/api/coinmarketcap/ion',
+    //             cache: false,
+    //             success: function (data) {
+    //                 capUsd = data.data.market_cap.usd;
+    //                 capUsd = addCommas(parseFloat(capUsd).toFixed(2));
+    //
+    //                 $.jStorage.set('marketcap-usd', capUsd, {TTL: 60000});
+    //
+    //                 $("#market-cap").text("$" + capUsd + " USD");
+    //                 $("#price-usd").text("$" + usdprice + " USD");
+    //                 $("#price-btc").text(btcprice + " BTC");
+    //             },
+    //             dataType: "json",
+    //             timeout: 2000
+    //         })
+    //     })();
+    // }
+    //
+    // if (btcUsd > 0) {
+    //     marketPoll();
+    // } else {
+    //     (function coinmarketcapBtc() {
+    //         $.ajax({
+    //             url: '/api/coinmarketcap/price/btc',
+    //             cache: false,
+    //             success: function (data) {
+    //                 btcUsd = parseFloat(data.data.price.usd).toFixed(4);
+    //
+    //                 $.jStorage.set('btc-usd', btcUsd, {TTL: 60000});
+    //
+    //                 marketPoll();
+    //             },
+    //             dataType: "json",
+    //             timeout: 2000
+    //         })
+    //     })();
+    // }
 
     $(function () {
 

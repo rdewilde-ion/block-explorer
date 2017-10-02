@@ -113,15 +113,15 @@ class IONDb {
 	public function processTransactions($block) {
 		$transactions = $block['tx'];
 
-		$ION = new IONRPC();
+		$ion = new IONRPC();
 		$totalValue = 0;
 		$totalValueIn = 0;
 		$transactionCount = 0;
 		foreach ($transactions as $transaction) {
 			$transactionCount++;
 
-			$rawTransaction = $ION->getRawTransaction($transaction);
-			$decodedTransaction = $ION->decodeRawTransaction($rawTransaction);
+			$rawTransaction = $ion->getRawTransaction($transaction);
+			$decodedTransaction = $ion->decodeRawTransaction($rawTransaction);
 
 			$vIn = $this->processVin($decodedTransaction);
 			$vOut = $this->processVout($decodedTransaction);
@@ -184,9 +184,9 @@ class IONDb {
 
 	public function getVout($txid, $vout, $type) {
 
-		$ION = new IONRPC();
-		$rawTransaction = $ION->getRawTransaction($txid);
-		$transaction = $ION->decodeRawTransaction($rawTransaction);
+		$ion = new IONRPC();
+		$rawTransaction = $ion->getRawTransaction($txid);
+		$transaction = $ion->decodeRawTransaction($rawTransaction);
 		if ($type == "addresses") {
 			$return = $transaction['vout'][$vout]["scriptPubKey"]["addresses"][0];
 		} else {
@@ -262,15 +262,15 @@ class IONDb {
 			$outstanding = $previousBlock['outstanding'];
 		}
 
-		$IONRPC = new IONRPC();
+		$ionRPC = new IONRPC();
 
 		for ($i = $startBlockHeight; $i <= $endBlockHeight; $i++) {
 			echo '.';
-			if ($i % (($endBlockHeight - $startBlockHeight) / 100) == 0) {
-				echo $i.PHP_EOL;
-			}
-			$blockHash = $IONRPC->getBlockHash($i);
-			$block = $IONRPC->getBlock($blockHash);
+//			if ($i % (($endBlockHeight - $startBlockHeight) / 100) == 0) {
+//				echo $i.PHP_EOL;
+//			}
+			$blockHash = $ionRPC->getBlockHash($i);
+			$block = $ionRPC->getBlock($blockHash);
 
 			$sql = 'UPDATE blocks SET nextblockhash = ' . $this->mysql->escape($block['hash']) .  ' WHERE `height` =' . ($block['height']-1);
 			$this->mysql->query($sql);
@@ -904,9 +904,9 @@ class IONDb {
 
 		$limit = (int) $limit;
 
-		$blocks = $this->mysql->select("SELECT `timestamp`, outstanding,
+		$blocks = $this->mysql->select("SELECT MAX(`timestamp`) timestamp, MAX(outstanding) outstanding,
 		DATE_FORMAT(FROM_UNIXTIME(TIMESTAMP), '%m %d %y %h %m') AS points
-		FROM blocks GROUP BY points ORDER BY `timestamp` ASC  LIMIT " . (int)$limit, 3500);
+		FROM blocks GROUP BY points ORDER BY MAX(`timestamp`) ASC  LIMIT " . (int)$limit, 3500);
 		//$dataPoints[] = "[1418361000, 0] \n";
 		$dataPoints = array();
 		foreach ($blocks as $block) {
@@ -1012,14 +1012,14 @@ class IONDb {
 
 	public function updateNetworkInfo() {
 
-		$ION = new IONRPC(); // FIXME
-		$peers = $ION->getPeerInfo();
+		$ion = new IONRPC(); // FIXME
+		$peers = $ion->getPeerInfo();
 		if (count($peers) > 0) {
 			$this->updatePeers($peers);
 		}
 
-//		$ION = new IONRPC('YoshiRpi1');
-//		$peers = $ION->getPeerInfo();
+//		$ion = new IONRPC('YoshiRpi1');
+//		$peers = $ion->getPeerInfo();
 		var_dump($peers);
 	}
 
@@ -1027,21 +1027,31 @@ class IONDb {
 		$maxMind = new MaxMind();
 		foreach ($peers as $peer) {
 
+			$peer['subver'] = $peer['subversion'];
+			unset($peer['syncnode']);
+			unset($peer['subversion']);
+			unset($peer['pingwait']);
+
+			if (empty($peer['inbound'])) {
+				$peer['inbound'] = 0;
+			}
+
 			$insert = $peer;
 			$update = $peer;
 
 			list($ip, $post) = explode(':', $peer['addr']);
 			$geoInfo = $maxMind->getGeoInfo($ip);
+
 			sleep(.2);
 			$insert['country_code'] = $geoInfo['countryCode'];
 			$insert['country_name'] = $geoInfo['countryName'];
-			$insert['state'] = $geoInfo['state'];
-			$insert['city'] = $geoInfo['city'];
+			$insert['state'] = ''; //$geoInfo['state'];
+			$insert['city'] = ''; //$geoInfo['city'];
 
 			$update['country_code'] = $geoInfo['countryCode'];
 			$update['country_name'] = $geoInfo['countryName'];
-			$update['state'] = $geoInfo['state'];
-			$update['city'] = $geoInfo['city'];
+			$update['state'] = ''; //$geoInfo['state'];
+			$update['city'] = ''; //$geoInfo['city'];
 
 			$this->mysql->insert('network', $insert, false, $update);
 
@@ -1051,7 +1061,7 @@ class IONDb {
 	public function getNetwork() {
 		$since = mktime(0, 0, 0) - (24 * 60 * 60);
 
-		$sql = "SELECT COUNT(*) as connections FROM network
+		$sql = "SELECT COUNT(*) as connections, subver FROM network
 			WHERE lastsend > $since OR lastrecv > $since GROUP BY subver order by connections desc";
 
 		$subVersions = $this->mysql->select($sql, 60);

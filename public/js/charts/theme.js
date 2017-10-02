@@ -14,7 +14,7 @@ $( document ).ready(function() {    /**
         colors: ["#087094", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
             "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
         chart: {
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'rgba(255, 255, 255)',
             style: {
                 fontFamily: "'Lato', sans-serif"
 
@@ -23,31 +23,31 @@ $( document ).ready(function() {    /**
         },
         title: {
             style: {
-                color: '#E0E0E3',
+                color: 'rgb(0,0,0)',
                 textTransform: 'uppercase',
-                fontSize: '25px',
+                fontSize: '18px',
                 fontFamily: '"Montserrat", sans-serif'
             }
         },
         subtitle: {
             style: {
-                color: '#E0E0E3',
+                color: 'rgb(0,0,0, 0.8)',
                 textTransform: 'uppercase'
             }
         },
         xAxis: {
-            gridLineColor: '#707073',
+            gridLineColor: '#888',
             labels: {
                 style: {
-                    color: '#E0E0E3'
+                    color: '#444'
                 }
             },
-            lineColor: '#707073',
-            minorGridLineColor: '#505053',
-            tickColor: '#707073',
+            lineColor: '#000',
+            minorGridLineColor: '#888',
+            tickColor: '#000',
             title: {
                 style: {
-                    color: '#A0A0A3'
+                    color: '#000'
 
                 }
             }
@@ -56,7 +56,7 @@ $( document ).ready(function() {    /**
             gridLineColor: '#707073',
             labels: {
                 style: {
-                    color: '#E0E0E3'
+                    color: '#444'
                 }
             },
             lineColor: '#707073',
@@ -65,7 +65,7 @@ $( document ).ready(function() {    /**
             tickWidth: 1,
             title: {
                 style: {
-                    color: '#A0A0A3'
+                    color: '#000'
                 }
             }
         },
@@ -112,7 +112,7 @@ $( document ).ready(function() {    /**
         },
         labels: {
             style: {
-                color: '#707073'
+                color: '#000'
             }
         },
 

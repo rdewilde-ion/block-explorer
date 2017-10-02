@@ -7,7 +7,6 @@ body {
 	margin: 0;
 	background: #e4e9f0 none repeat scroll 0 0;
 	font-family: "Roboto",sans-serif;
-	padding-top: 60px;
 	line-height: 1.42857;
 	/*background: #087094 radial-gradient(#087094, #042d3c) no-repeat fixed;*/
 }
@@ -39,8 +38,19 @@ h2 {
 .logo {
 	background: rgba(0, 0, 0, 0) url("/img/logo.svg") no-repeat scroll center center / 100% auto;
 	display: inline-block;
-	height: 60px;
-	width: 75px;
+	height: 65px;
+	width: 100%;
+	background-size: 100px auto;
+	background-position: left bottom;
+}
+#searchform {
+    margin-bottom: 8px;
+}
+#searchform>.row>.col-xs-10>input{
+	height: 34px;
+    padding: 0 10px;
+    border-radius: 4px;
+    border: 1px #cccccc solid;
 }
 .navbar .navbar-nav {
 	display: inline-block;
@@ -55,12 +65,16 @@ h2 {
 }
 .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
 	background: none !important;
-	border: none;
+	border-color: rgba(0,0,0,0.00001);
 }
 
 .nav-tabs > li > a:hover {
 	background: none !important;
-	border: none;
+	border-color: rgba(0,0,0,0.00001);
+}
+
+nav input {
+	color: black;
 }
 
 /*#087094*/
@@ -95,9 +109,6 @@ nav {
 }
 .nav-tabs>li a:hover {
 	/*background-color: #042d3c;*/
-}
-.nav-tabs {
-	/*border-bottom: 2px solid #087094;*/
 }
 .nav-tabs>li>a:hover {
 	/*border-color: #087094 #087094 #087094;*/
@@ -544,5 +555,9 @@ h1 {
 	-webkit-transform-origin: 50% 50%;
 	transform-origin: 50% 50%;
 }
-
-
+.container-fluid{
+	min-height: calc(100vh - 75px) !important;
+}
+#sidebar-wrapper{
+	overflow-x: hidden;
+}

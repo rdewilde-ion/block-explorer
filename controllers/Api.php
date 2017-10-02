@@ -4,6 +4,7 @@
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace controllers;
+use lib\Cache;
 use lib\IONDb;
 use lib\IONRPC;
 
@@ -12,10 +13,14 @@ use lib\IONRPC;
  * @package controllers
  */
 class Api extends Controller {
+	static $cache;
 
 	public function __construct($bootstrap) {
 		parent::__construct($bootstrap);
 
+		if (empty(self::$cache)) {
+			self::$cache = Cache::getInstance();
+		}
 	}
 
 	public function index() {
@@ -115,26 +120,64 @@ class Api extends Controller {
 
 	}
 
-	public function getPrimeStakes() {
+	public function getBittrexTicker() {
+		$currency = strtolower(substr($this->bootstrap->route['currency'], 0, 3));
 
-		$limit = $this->getLimit();
+		$url = 'https://bittrex.com/api/v1.1/public/getticker?market=btc-'.$currency;
 
-		$ionDb = new IONDb();
-		$primeStakes = $ionDb->primeStakes($limit);
-		$this->outputJsonResponse($primeStakes);
+		$return = null;//static::$cache->get($url);
+		if (empty($return)) {
+			$response = file_get_contents($url);
+
+			$data = json_decode($response);
+			
+			$return = $data->result;
+
+			static::$cache->set($url, $return, 60);
+		}
+
+		$this->outputJsonResponse($return);
 	}
 
 	public function getBittrexMarket() {
-		// TODO cache time
-		$response = file_get_contents('https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-ion');
+		$currency = strtolower(substr($this->bootstrap->route['currency'], 0, 3));
 
-		$data = json_decode($response);
+		$url = 'https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-'.$currency;
 
-		$this->outputJsonResponse($data->result[0]);
+		$return = static::$cache->get($url);
+		if (empty($return)) {
+			$response = file_get_contents($url);
+
+			$data = json_decode($response);
+
+			$return = $data->result[0];
+
+			static::$cache->set($url, $return, 60);
+		}
+
+		$this->outputJsonResponse($return);
 	}
+
 
 	public function getCoinmarketcap() {
+		$currency = strtolower($this->bootstrap->route['currency']);
+
+		$url = 'https://api.coinmarketcap.com/v1/ticker/'.$currency.'/';
+
+		$return = static::$cache->get($url);
+		if (empty($return)) {
+			$response = file_get_contents($url);
+
+			$data = json_decode($response);
+
+			$return = $data[0];
+
+			static::$cache->set($url, $return, 60);
+		}
+
+		$this->outputJsonResponse($return);
 	}
+
 
 	private function getLimit($default = 100, $max = 10000) {
 		$limit = $this->bootstrap->httpRequest->get('limit');
@@ -149,12 +192,13 @@ class Api extends Controller {
 
 	public function outputJsonResponse($data) {
 
-		$cacheTime = 120;
+		$cacheTime = 0;
 		$ts = gmdate("D, d M Y H:i:s", time() + $cacheTime) . " GMT";
 		header("Expires: $ts");
 		header("Pragma: cache");
 		header("Cache-Control: max-age=$cacheTime");
 		header('Content-Type: application/json');
+		header("Access-Control-Allow-Origin: *");
 
 		echo json_encode(
 			array(

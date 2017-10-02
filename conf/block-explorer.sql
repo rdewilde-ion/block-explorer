@@ -25,7 +25,10 @@ CREATE TABLE `address_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` varchar(64) NOT NULL,
   `tag` varchar(64) NOT NULL,
+  `url` varchar(255) DEFAULT NULL,
   `verified` tinyint(1) DEFAULT '0',
+  `time_created` int(11) DEFAULT NUlL,
+  `time_updated` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `wallet` (`address`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -177,7 +180,7 @@ CREATE TABLE `network`(
   `country_name` VARCHAR(100) DEFAULT NULL,
   `city` VARCHAR(100) DEFAULT NULL,
   `state`VARCHAR(100) DEFAULT NULL,
-  `connections` INT(11) DEFAUT 0,
+  `connections` INT(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `addr` (`addr`),
   KEY `height` (`height`)
