@@ -59,6 +59,11 @@ services:
         restart: always
         env_file:
             - ".env"
+        environment:
+            - IOND_USER=${IOND_USER}
+            - IOND_PASS=${IOND_PASS}
+            - IOND_ALLOWIP=${IOND_ALLOWIP}
+            - IOND_ARGS=${IOND_ARGS}
         volumes:
             - "./ioncoin/:/root/.ioncoin/"
     memcached:

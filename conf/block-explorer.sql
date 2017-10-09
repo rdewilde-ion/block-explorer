@@ -61,7 +61,7 @@ CREATE TABLE `blocks` (
   `version` int(11) DEFAULT NULL,
   `merkleroot` varchar(64) DEFAULT NULL,
   `time` varchar(255) DEFAULT NULL,
-  `nonce` int(11) DEFAULT NULL,
+  `nonce` bigint(17) DEFAULT NULL,
   `bits` varchar(16) DEFAULT NULL,
   `difficulty` decimal(18,8) DEFAULT NULL,
   `mint` decimal(18,8) DEFAULT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE `transactions_out` (
   `time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `address` (`address`),
-  KEY `txidp` (`txidp`),
+  KEY `txidp` (`txidp`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `netwok` */
