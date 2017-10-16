@@ -300,7 +300,6 @@ class IONDb {
 
 			$this->mysql->startTransaction();
 			$transactionsReturn = $this->processTransactions($block);
-
 			$blockInsert['transactions'] = $transactionsReturn['transactionCount'];
 			$blockInsert['valueout'] = $transactionsReturn['totalValue'];
 			$blockInsert['valuein'] = $transactionsReturn['totalValueIn'];
